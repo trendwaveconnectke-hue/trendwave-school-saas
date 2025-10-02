@@ -1,0 +1,14 @@
+{
+  "name": "school-saas-backend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "mongoose": "^7.0.0",
+    "bcryptjs": "^2.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "cors": "^2.8.0"
+  }
+}
