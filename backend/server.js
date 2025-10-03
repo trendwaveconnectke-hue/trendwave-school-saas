@@ -8,9 +8,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB (we'll get this later)
+// Add a test route to verify server is running
+app.get('/', (req, res) => {
+  res.json({ message: 'TrendWave Connect API is running!' });
+});
+
+// Connect to MongoDB with better error handling
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/schoolsaas';
-mongoose.connect(MONGODB_URI);
+
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('✅ MongoDB connected successfully');
+  })
+  .catch((error) => {
+    console.log('❌ MongoDB connection failed:', error.message);
+  });
 
 // School Schema
 const schoolSchema = new mongoose.Schema({
@@ -64,31 +76,39 @@ app.post('/api/admin/schools', async (req, res) => {
 
 // Get All Schools
 app.get('/api/admin/schools', async (req, res) => {
-  const schools = await School.find();
-  res.json(schools);
+  try {
+    const schools = await School.find();
+    res.json(schools);
+  } catch (error) {
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // School Login
 app.post('/api/login', async (req, res) => {
-  const { schoolCode, email, password } = req.body;
-  
-  const school = await School.findOne({ schoolCode });
-  if (!school) return res.status(400).json({ error: 'School not found' });
-  
-  const user = await User.findOne({ schoolId: school._id, email });
-  if (!user) return res.status(400).json({ error: 'User not found' });
-  
-  const validPass = await bcrypt.compare(password, user.password);
-  if (!validPass) return res.status(400).json({ error: 'Invalid password' });
-  
-  const token = jwt.sign(
-    { userId: user._id, schoolId: school._id, role: user.role },
-    'your-secret-key',
-    { expiresIn: '24h' }
-  );
-  
-  res.json({ token, user, school });
+  try {
+    const { schoolCode, email, password } = req.body;
+    
+    const school = await School.findOne({ schoolCode });
+    if (!school) return res.status(400).json({ error: 'School not found' });
+    
+    const user = await User.findOne({ schoolId: school._id, email });
+    if (!user) return res.status(400).json({ error: 'User not found' });
+    
+    const validPass = await bcrypt.compare(password, user.password);
+    if (!validPass) return res.status(400).json({ error: 'Invalid password' });
+    
+    const token = jwt.sign(
+      { userId: user._id, schoolId: school._id, role: user.role },
+      process.env.JWT_SECRET || 'fallback-secret',
+      { expiresIn: '24h' }
+    );
+    
+    res.json({ token, user, school });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
