@@ -121,18 +121,32 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div style={styles.headerRight}>
-            <button style={styles.notificationBtn}>
-              🔔 <span style={styles.notificationBadge}>3</span>
-            </button>
-            <button style={styles.profileBtn}>
-              👤 Admin
-            </button>
-            <button onClick={handleLogout} style={styles.logoutBtn}>
-              Logout
-            </button>
-          </div>
+      <div style={styles.headerRight}>
+  <div style={styles.headerActions}>
+    <button style={styles.notificationBtn}>
+      <span style={styles.notificationIcon}>🔔</span>
+      <span style={styles.notificationBadge}>3</span>
+    </button>
+    
+    <div style={styles.profileDropdown}>
+      <button style={styles.profileBtn}>
+        <div style={styles.profileAvatar}>A</div>
+        <div style={styles.profileInfo}>
+          <span style={styles.profileName}>Admin User</span>
+          <span style={styles.profileRole}>School Administrator</span>
         </div>
+        <span style={styles.dropdownArrow}>▼</span>
+      </button>
+      <div style={styles.dropdownMenu}>
+        <button style={styles.dropdownItem}>👤 My Profile</button>
+        <button style={styles.dropdownItem}>⚙️ Account Settings</button>
+        <button style={styles.dropdownItem}>🔒 Privacy & Security</button>
+        <div style={styles.dropdownDivider}></div>
+        <button onClick={handleLogout} style={styles.dropdownItemLogout}>
+          🚪 Logout
+        </button>
+      </div>
+    </div>
       </header>
 
       {/* Main Layout */}
