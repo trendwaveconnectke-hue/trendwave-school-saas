@@ -405,7 +405,6 @@ const setRealisticData = () => {
     <span style={styles.miniStatLabel}>Attendance</span>
   </div>
 </div>
-              </div>
 
               {/* Students Table */}
               <div style={styles.tableContainer}>
