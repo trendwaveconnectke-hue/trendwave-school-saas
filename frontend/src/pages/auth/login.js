@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-export default function CachedLogin() {
+export default function CompactLogin() {
   const [formData, setFormData] = useState({
     schoolId: '',
     email: '',
@@ -13,90 +13,56 @@ export default function CachedLogin() {
   const [errors, setErrors] = useState({});
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Initialize Service Worker
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('Service Worker Registered'))
-        .catch(err => console.log('Service Worker Registration Failed'));
-    }
-
-    // Load cached credentials if "Remember Me" was checked
-    const cachedLogin = localStorage.getItem('cachedLogin');
-    if (cachedLogin) {
-      const { schoolId, email, remember } = JSON.parse(cachedLogin);
+    generateCaptcha();
+    
+    // Load cached credentials
+    const cached = localStorage.getItem('cachedLogin');
+    if (cached) {
+      const { schoolId, email, remember } = JSON.parse(cached);
       if (remember) {
         setFormData(prev => ({ ...prev, schoolId, email }));
         setRememberMe(true);
       }
     }
-
-    generateCaptcha();
   }, []);
 
-  // Generate random math captcha
   const generateCaptcha = () => {
-    const operations = ['+', '-', '*'];
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    const operator = operations[Math.floor(Math.random() * operations.length)];
+    const num1 = Math.floor(Math.random() * 8) + 1;
+    const num2 = Math.floor(Math.random() * 8) + 1;
+    const answer = num1 + num2;
     
-    let answer;
-    switch(operator) {
-      case '+': answer = num1 + num2; break;
-      case '-': answer = num1 - num2; break;
-      case '*': answer = num1 * num2; break;
-      default: answer = num1 + num2;
-    }
-
-    setCaptcha({
-      question: `${num1} ${operator} ${num2}`,
-      answer: answer
-    });
+    setCaptcha({ question: `${num1} + ${num2}`, answer });
     setUserAnswer('');
-  };
-
-  // Cache user credentials
-  const cacheCredentials = () => {
-    if (rememberMe) {
-      localStorage.setItem('cachedLogin', JSON.stringify({
-        schoolId: formData.schoolId,
-        email: formData.email,
-        remember: true
-      }));
-    } else {
-      localStorage.removeItem('cachedLogin');
-    }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Validate captcha
     if (parseInt(userAnswer) !== captcha.answer) {
-      setErrors({ captcha: 'Incorrect answer. Please try again.' });
+      setErrors({ captcha: 'Wrong answer' });
       generateCaptcha();
       setIsLoading(false);
       return;
     }
 
     try {
-      // Cache credentials if "Remember Me" is checked
-      cacheCredentials();
+      // Cache if remember me
+      if (rememberMe) {
+        localStorage.setItem('cachedLogin', JSON.stringify({
+          schoolId: formData.schoolId,
+          email: formData.email,
+          remember: true
+        }));
+      }
 
-      // Cache successful login in sessionStorage
-      sessionStorage.setItem('loginTime', new Date().toISOString());
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Store auth data
-      localStorage.setItem('admin_token', 'cached-token-' + Date.now());
+      localStorage.setItem('admin_token', 'token');
       localStorage.setItem('school_id', formData.schoolId);
       localStorage.setItem('school_name', 'Demo School');
       
-      // Redirect to dashboard
       window.location.href = '/admin/dashboard';
       
     } catch (error) {
@@ -108,123 +74,103 @@ export default function CachedLogin() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.loginBox}>
-        {/* Header */}
+      <div style={styles.loginCard}>
+        {/* Header - Compact */}
         <div style={styles.header}>
           <div style={styles.logo}>🎓</div>
-          <h1 style={styles.title}>TrendWave Connect</h1>
-          <p style={styles.subtitle}>Secure Admin Login</p>
+          <div>
+            <h1 style={styles.title}>TrendWave Connect</h1>
+            <p style={styles.subtitle}>Admin Portal</p>
+          </div>
         </div>
 
-        {/* Login Form */}
+        {/* Login Form - Compact */}
         <form onSubmit={handleLogin} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <input
-              type="text"
-              placeholder="School ID (TWC...)"
-              value={formData.schoolId}
-              onChange={(e) => setFormData({...formData, schoolId: e.target.value})}
-              style={styles.input}
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="School ID"
+            value={formData.schoolId}
+            onChange={(e) => setFormData({...formData, schoolId: e.target.value})}
+            style={styles.input}
+          />
 
-          <div style={styles.inputGroup}>
-            <input
-              type="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              style={styles.input}
-            />
-          </div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            style={styles.input}
+          />
 
-          <div style={styles.inputGroup}>
-            <input
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-              style={styles.input}
-            />
-          </div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            style={styles.input}
+          />
 
-          {/* Dynamic Captcha */}
-          <div style={styles.captchaSection}>
-            <label style={styles.captchaLabel}>
-              Security Check: {captcha.question} = ?
-            </label>
-            <div style={styles.captchaRow}>
-              <input
-                type="number"
-                placeholder="Answer"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                style={styles.captchaInput}
-              />
+          {/* Compact Captcha */}
+          <div style={styles.captchaBox}>
+            <div style={styles.captchaHeader}>
+              <span>Security: {captcha.question} = ?</span>
               <button 
                 type="button" 
                 onClick={generateCaptcha}
-                style={styles.refreshButton}
+                style={styles.refreshBtn}
               >
                 🔄
               </button>
             </div>
-            {errors.captcha && <span style={styles.error}>{errors.captcha}</span>}
+            <input
+              type="number"
+              placeholder="Answer"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              style={styles.captchaInput}
+            />
+            {errors.captcha && <span style={styles.error}>⚠️ {errors.captcha}</span>}
           </div>
 
-          {/* Remember Me */}
-          <div style={styles.rememberSection}>
-            <label style={styles.rememberLabel}>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                style={styles.checkbox}
-              />
-              Remember my School ID & Email
-            </label>
-          </div>
+          {/* Remember Me - Compact */}
+          <label style={styles.remember}>
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              style={styles.checkbox}
+            />
+            Remember me
+          </label>
 
-          {/* Submit Button */}
+          {/* Submit Button - Compact */}
           <button 
             type="submit" 
             disabled={isLoading}
-            style={styles.submitButton}
+            style={styles.loginBtn}
           >
-            {isLoading ? '🔄 Signing In...' : '🚀 Sign In'}
+            {isLoading ? '🔐 Signing in...' : '🚀 Sign In'}
           </button>
 
-          {errors.submit && <span style={styles.error}>{errors.submit}</span>}
+          {errors.submit && <span style={styles.error}>❌ {errors.submit}</span>}
         </form>
 
-        {/* Visitor Section */}
-        <div style={styles.visitorSection}>
-          <p style={styles.visitorText}>Visitor? Join our platform</p>
-          <button style={styles.visitorButton}>
-            🌐 Learn More at trendwaveconnect.com
+        {/* Visitor Section - Compact */}
+        <div style={styles.visitorBox}>
+          <span style={styles.visitorText}>New school?</span>
+          <button style={styles.visitorBtn}>
+            Visit trendwaveconnect.com
           </button>
         </div>
 
-        {/* Support Section - Bottom Left */}
-        <div style={styles.supportSection}>
-          <p style={styles.supportTitle}>Issues with login?</p>
+        {/* Support - Compact */}
+        <div style={styles.supportBox}>
+          <span style={styles.supportText}>Login issues?</span>
           <div style={styles.supportLinks}>
-            <a href="mailto:support@trendwaveconnect.com" style={styles.supportLink}>
-              📧 Email Support
-            </a>
-            <a href="tel:+254700000000" style={styles.supportLink}>
-              📞 Call Support
-            </a>
-            <button style={styles.supportLink} onClick={generateCaptcha}>
-              🔄 New Security Check
-            </button>
+            <a href="mailto:support@trendwaveconnect.com">📧 Support</a>
+            <a href="tel:+254700000000">📞 Call</a>
           </div>
         </div>
-      </div>
-
-      {/* Cache Status Indicator */}
-      <div style={styles.cacheStatus}>
-        {rememberMe ? '🔒 Credentials cached' : '⚡ Fast login enabled'}
       </div>
     </div>
   );
@@ -237,172 +183,165 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '20px',
+    padding: '15px',
     fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
   },
-  loginBox: {
+  loginCard: {
     background: 'white',
-    padding: '2.5rem',
-    borderRadius: '20px',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+    padding: '25px',
+    borderRadius: '12px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
     width: '100%',
-    maxWidth: '420px',
-    position: 'relative'
+    maxWidth: '350px',
+    maxHeight: '95vh',
+    overflow: 'hidden'
   },
   header: {
-    textAlign: 'center',
-    marginBottom: '2rem'
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '20px',
+    textAlign: 'left'
   },
   logo: {
-    fontSize: '3rem',
-    marginBottom: '1rem'
+    fontSize: '28px',
+    background: '#1E3A8A',
+    color: 'white',
+    width: '45px',
+    height: '45px',
+    borderRadius: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   title: {
-    fontSize: '1.8rem',
+    fontSize: '18px',
     fontWeight: '700',
     color: '#1E3A8A',
-    margin: '0 0 0.5rem 0'
+    margin: '0 0 2px 0'
   },
   subtitle: {
+    fontSize: '12px',
     color: '#6B7280',
     margin: 0
   },
   form: {
-    marginBottom: '1.5rem'
-  },
-  inputGroup: {
-    marginBottom: '1rem'
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+    marginBottom: '20px'
   },
   input: {
+    padding: '10px 12px',
+    border: '1.5px solid #E5E7EB',
+    borderRadius: '8px',
+    fontSize: '14px',
     width: '100%',
-    padding: '1rem',
-    border: '2px solid #E5E7EB',
-    borderRadius: '10px',
-    fontSize: '1rem',
     boxSizing: 'border-box'
   },
-  captchaSection: {
-    marginBottom: '1rem',
-    padding: '1rem',
+  captchaBox: {
     background: '#F8FAFC',
-    borderRadius: '10px'
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid #E5E7EB'
   },
-  captchaLabel: {
-    display: 'block',
+  captchaHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '8px',
+    fontSize: '13px',
     fontWeight: '600',
-    marginBottom: '0.5rem',
     color: '#374151'
   },
-  captchaRow: {
-    display: 'flex',
-    gap: '0.5rem'
+  refreshBtn: {
+    background: 'none',
+    border: 'none',
+    fontSize: '12px',
+    cursor: 'pointer',
+    padding: '4px'
   },
   captchaInput: {
-    flex: 1,
-    padding: '0.75rem',
-    border: '2px solid #E5E7EB',
-    borderRadius: '8px',
-    fontSize: '1rem'
+    padding: '8px 10px',
+    border: '1.5px solid #E5E7EB',
+    borderRadius: '6px',
+    fontSize: '14px',
+    width: '100%',
+    boxSizing: 'border-box'
   },
-  refreshButton: {
-    background: '#1E3A8A',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '0.75rem',
-    cursor: 'pointer',
-    fontSize: '1rem'
-  },
-  rememberSection: {
-    marginBottom: '1.5rem'
-  },
-  rememberLabel: {
+  remember: {
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem',
-    fontSize: '0.9rem',
+    gap: '6px',
+    fontSize: '12px',
     color: '#374151',
     cursor: 'pointer'
   },
   checkbox: {
-    margin: 0
+    margin: 0,
+    transform: 'scale(0.9)'
   },
-  submitButton: {
-    width: '100%',
+  loginBtn: {
     background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
     color: 'white',
     border: 'none',
-    padding: '1rem',
-    borderRadius: '10px',
-    fontSize: '1.1rem',
+    padding: '10px',
+    borderRadius: '8px',
+    fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
-    marginBottom: '1rem'
+    marginTop: '5px'
   },
   error: {
     color: '#EF4444',
-    fontSize: '0.9rem',
-    display: 'block',
-    textAlign: 'center'
-  },
-  visitorSection: {
+    fontSize: '11px',
     textAlign: 'center',
-    marginBottom: '2rem',
-    paddingTop: '1rem',
-    borderTop: '1px solid #E5E7EB'
+    display: 'block'
+  },
+  visitorBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 0',
+    borderTop: '1px solid #E5E7EB',
+    borderBottom: '1px solid #E5E7EB',
+    marginBottom: '15px'
   },
   visitorText: {
-    color: '#6B7280',
-    margin: '0 0 0.75rem 0'
+    fontSize: '12px',
+    color: '#6B7280'
   },
-  visitorButton: {
-    background: 'transparent',
-    border: '2px solid #1E3A8A',
+  visitorBtn: {
+    background: 'none',
+    border: '1px solid #1E3A8A',
     color: '#1E3A8A',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontWeight: '600'
+    padding: '6px 10px',
+    borderRadius: '6px',
+    fontSize: '11px',
+    cursor: 'pointer'
   },
-  supportSection: {
-    position: 'absolute',
-    bottom: '-80px',
-    left: '0',
-    right: '0',
-    textAlign: 'center'
+  supportBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  supportTitle: {
-    color: 'white',
-    margin: '0 0 0.5rem 0',
-    fontSize: '0.9rem'
+  supportText: {
+    fontSize: '11px',
+    color: '#6B7280'
   },
   supportLinks: {
     display: 'flex',
-    gap: '1rem',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
+    gap: '10px'
   },
-  supportLink: {
-    color: 'white',
-    background: 'rgba(255,255,255,0.2)',
-    padding: '0.5rem 1rem',
-    borderRadius: '20px',
-    textDecoration: 'none',
-    fontSize: '0.8rem',
-    border: 'none',
-    cursor: 'pointer',
-    backdropFilter: 'blur(10px)'
-  },
-  cacheStatus: {
-    position: 'absolute',
-    top: '20px',
-    right: '20px',
-    background: 'rgba(255,255,255,0.9)',
-    padding: '0.5rem 1rem',
-    borderRadius: '20px',
-    fontSize: '0.8rem',
-    color: '#1E3A8A',
-    fontWeight: '500'
+  supportLinks: {
+    display: 'flex',
+    gap: '10px'
   }
+};
+
+// Add CSS for links
+const linkStyle = {
+  fontSize: '11px',
+  color: '#1E3A8A',
+  textDecoration: 'none'
 };
