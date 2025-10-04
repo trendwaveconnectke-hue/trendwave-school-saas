@@ -17,7 +17,6 @@ export default function AdminDashboard() {
   });
   const [recentActivity, setRecentActivity] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [user, setUser] = useState(null);
   const router = useRouter();
 
   // Authentication check
@@ -173,6 +172,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <main style={styles.mainContent}>
+          {/* DASHBOARD TAB */}
           {activeTab === 'dashboard' && (
             <div style={styles.dashboard}>
               {/* Stats Grid */}
@@ -273,8 +273,242 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Other Tabs Placeholder */}
-          {activeTab !== 'dashboard' && (
+          {/* STUDENTS TAB - COMPLETE IMPLEMENTATION */}
+          {activeTab === 'students' && (
+            <div style={styles.tabContent}>
+              {/* Students Tab Header */}
+              <div style={styles.tabHeader}>
+                <div>
+                  <h2 style={styles.tabTitle}>Students Management</h2>
+                  <p style={styles.tabSubtitle}>Manage all student records, profiles, and academic information</p>
+                </div>
+                <div style={styles.tabActions}>
+                  <button style={styles.primaryButton}>
+                    📤 Bulk Import
+                  </button>
+                  <button style={styles.primaryButton}>
+                    👥 Add New Student
+                  </button>
+                  <button style={styles.secondaryButton}>
+                    📊 Export Report
+                  </button>
+                </div>
+              </div>
+
+              {/* Students Filters */}
+              <div style={styles.filtersSection}>
+                <div style={styles.filterGroup}>
+                  <select style={styles.filterSelect}>
+                    <option>All Classes</option>
+                    <option>Grade 1A</option>
+                    <option>Grade 1B</option>
+                    <option>Grade 2A</option>
+                  </select>
+                  <select style={styles.filterSelect}>
+                    <option>All Status</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Graduated</option>
+                  </select>
+                  <select style={styles.filterSelect}>
+                    <option>Sort by: Newest</option>
+                    <option>Sort by: Name</option>
+                    <option>Sort by: Class</option>
+                  </select>
+                </div>
+                <div style={styles.searchBox}>
+                  <input
+                    type="text"
+                    placeholder="Search students by name, ID, parent phone..."
+                    style={styles.searchInput}
+                  />
+                  <span style={styles.searchIcon}>🔍</span>
+                </div>
+              </div>
+
+              {/* Students Stats */}
+              <div style={styles.miniStats}>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>245</span>
+                  <span style={styles.miniStatLabel}>Total Students</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>238</span>
+                  <span style={styles.miniStatLabel}>Active</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>7</span>
+                  <span style={styles.miniStatLabel}>Inactive</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>92%</span>
+                  <span style={styles.miniStatLabel}>Attendance</span>
+                </div>
+              </div>
+
+              {/* Students Table */}
+              <div style={styles.tableContainer}>
+                <table style={styles.dataTable}>
+                  <thead>
+                    <tr>
+                      <th style={styles.tableHeader}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </th>
+                      <th style={styles.tableHeader}>Student Info</th>
+                      <th style={styles.tableHeader}>Class</th>
+                      <th style={styles.tableHeader}>Parent</th>
+                      <th style={styles.tableHeader}>Contact</th>
+                      <th style={styles.tableHeader}>Status</th>
+                      <th style={styles.tableHeader}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Student Row 1 */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={styles.avatar}>JD</div>
+                          <div>
+                            <div style={styles.studentName}>John Doe</div>
+                            <div style={styles.studentId}>ID: TWC001</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 10B</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Jane Doe</div>
+                          <div style={styles.relationship}>Mother</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 712 345 678</div>
+                          <div>📧 jane@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusActive}>Active</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Message">💬</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    {/* Student Row 2 */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={styles.avatar}>SM</div>
+                          <div>
+                            <div style={styles.studentName}>Sarah Smith</div>
+                            <div style={styles.studentId}>ID: TWC002</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 9A</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Robert Smith</div>
+                          <div style={styles.relationship}>Father</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 723 456 789</div>
+                          <div>📧 robert@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusActive}>Active</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Message">💬</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    {/* Student Row 3 - Fee Pending */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={{...styles.avatar, background: '#f59e0b'}}>MJ</div>
+                          <div>
+                            <div style={styles.studentName}>Michael Johnson</div>
+                            <div style={styles.studentId}>ID: TWC003</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 11C</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Lisa Johnson</div>
+                          <div style={styles.relationship}>Mother</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 734 567 890</div>
+                          <div>📧 lisa@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusWarning}>Fee Pending</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Collect Fee">💰</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div style={styles.pagination}>
+                <button style={styles.paginationButton}>← Previous</button>
+                <div style={styles.paginationPages}>
+                  <button style={styles.paginationPageActive}>1</button>
+                  <button style={styles.paginationPage}>2</button>
+                  <button style={styles.paginationPage}>3</button>
+                  <span>...</span>
+                  <button style={styles.paginationPage}>10</button>
+                </div>
+                <button style={styles.paginationButton}>Next →</button>
+              </div>
+            </div>
+          )}
+
+          {/* OTHER TABS PLACEHOLDER */}
+          {!['dashboard', 'students'].includes(activeTab) && (
             <div style={styles.tabContent}>
               <div style={styles.tabHeader}>
                 <h2 style={styles.tabTitle}>
@@ -319,6 +553,7 @@ export default function AdminDashboard() {
   );
 }
 
+// ========== COMPLETE STYLES OBJECT ==========
 const styles = {
   container: {
     minHeight: '100vh',
@@ -655,6 +890,11 @@ const styles = {
     color: '#1F2937',
     margin: 0
   },
+  tabSubtitle: {
+    color: '#6B7280',
+    fontSize: '14px',
+    margin: '4px 0 0 0'
+  },
   tabActions: {
     display: 'flex',
     gap: '1rem'
@@ -720,5 +960,201 @@ const styles = {
     cursor: 'pointer',
     fontWeight: '500',
     marginTop: '1rem'
+  },
+  // ========== STUDENTS TAB SPECIFIC STYLES ==========
+  filtersSection: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1.5rem 2rem',
+    borderBottom: '1px solid #e5e7eb',
+    background: '#f9fafb'
+  },
+  filterGroup: {
+    display: 'flex',
+    gap: '1rem'
+  },
+  filterSelect: {
+    padding: '8px 12px',
+    border: '1px solid #d1d5db',
+    borderRadius: '6px',
+    background: 'white',
+    fontSize: '14px'
+  },
+  searchBox: {
+    position: 'relative',
+    width: '300px'
+  },
+  miniStats: {
+    display: 'flex',
+    gap: '1rem',
+    padding: '1rem 2rem',
+    background: 'white',
+    borderBottom: '1px solid #e5e7eb'
+  },
+  miniStat: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '0.5rem 1rem',
+    background: '#f8fafc',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb'
+  },
+  miniStatNumber: {
+    fontSize: '1.25rem',
+    fontWeight: '700',
+    color: '#1E3A8A'
+  },
+  miniStatLabel: {
+    fontSize: '12px',
+    color: '#6B7280',
+    marginTop: '4px'
+  },
+  tableContainer: {
+    overflowX: 'auto'
+  },
+  dataTable: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    background: 'white'
+  },
+  tableHeader: {
+    padding: '1rem',
+    textAlign: 'left',
+    borderBottom: '2px solid #e5e7eb',
+    background: '#f9fafb',
+    fontWeight: '600',
+    color: '#374151',
+    fontSize: '14px'
+  },
+  tableRow: {
+    borderBottom: '1px solid #e5e7eb',
+    transition: 'background 0.2s'
+  },
+  tableCell: {
+    padding: '1rem',
+    fontSize: '14px'
+  },
+  checkbox: {
+    width: '16px',
+    height: '16px'
+  },
+  studentInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px'
+  },
+  avatar: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    background: '#1E3A8A',
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: '600',
+    fontSize: '14px'
+  },
+  studentName: {
+    fontWeight: '600',
+    color: '#1F2937'
+  },
+  studentId: {
+    fontSize: '12px',
+    color: '#6B7280',
+    marginTop: '2px'
+  },
+  classBadge: {
+    background: '#dbeafe',
+    color: '#1E40AF',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: '500'
+  },
+  parentInfo: {
+    fontSize: '14px'
+  },
+  parentName: {
+    fontWeight: '500',
+    color: '#374151'
+  },
+  relationship: {
+    fontSize: '12px',
+    color: '#6B7280',
+    marginTop: '2px'
+  },
+  contactInfo: {
+    fontSize: '13px',
+    color: '#6B7280'
+  },
+  statusActive: {
+    background: '#d1fae5',
+    color: '#065f46',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: '500'
+  },
+  statusWarning: {
+    background: '#fef3c7',
+    color: '#92400e',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: '500'
+  },
+  actionButtons: {
+    display: 'flex',
+    gap: '8px'
+  },
+  iconButton: {
+    background: 'none',
+    border: '1px solid #e5e7eb',
+    padding: '6px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    transition: 'all 0.2s'
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1.5rem 2rem',
+    borderTop: '1px solid #e5e7eb',
+    background: 'white'
+  },
+  paginationButton: {
+    background: 'white',
+    border: '1px solid #d1d5db',
+    padding: '8px 16px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '14px'
+  },
+  paginationPages: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center'
+  },
+  paginationPage: {
+    background: 'white',
+    border: '1px solid #d1d5db',
+    padding: '8px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '14px'
+  },
+  paginationPageActive: {
+    background: '#1E3A8A',
+    color: 'white',
+    border: '1px solid #1E3A8A',
+    padding: '8px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '14px'
   }
 };
