@@ -387,24 +387,23 @@ const setRealisticData = () => {
                 </div>
               </div>
 
-              {/* Students Stats */}
               <div style={styles.miniStats}>
-                <div style={styles.miniStat}>
-                  <span style={styles.miniStatNumber}>245</span>
-                  <span style={styles.miniStatLabel}>Total Students</span>
-                </div>
-                <div style={styles.miniStat}>
-                  <span style={styles.miniStatNumber}>238</span>
-                  <span style={styles.miniStatLabel}>Active</span>
-                </div>
-                <div style={styles.miniStat}>
-                  <span style={styles.miniStatNumber}>7</span>
-                  <span style={styles.miniStatLabel}>Inactive</span>
-                </div>
-                <div style={styles.miniStat}>
-                  <span style={styles.miniStatNumber}>92%</span>
-                  <span style={styles.miniStatLabel}>Attendance</span>
-                </div>
+  <div style={styles.miniStat}>
+    <span style={styles.miniStatNumber}>{stats.students}</span>
+    <span style={styles.miniStatLabel}>Total Students</span>
+  </div>
+  <div style={styles.miniStat}>
+    <span style={styles.miniStatNumber}>{stats.students - 15}</span>
+    <span style={styles.miniStatLabel}>Active</span>
+  </div>
+  <div style={styles.miniStat}>
+    <span style={styles.miniStatNumber}>15</span>
+    <span style={styles.miniStatLabel}>Balance Due</span>
+  </div>
+  <div style={styles.miniStat}>
+    <span style={styles.miniStatNumber}>{stats.attendance}%</span>
+    <span style={styles.miniStatLabel}>Attendance</span>
+  </div>
               </div>
 
               {/* Students Table */}
