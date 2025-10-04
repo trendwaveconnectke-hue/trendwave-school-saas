@@ -187,7 +187,7 @@ export default function ModernHome() {
           
           <div style={styles.footerBottom}>
             <p style={styles.copyright}>
-              © 2024 TrendWave Connect. All rights reserved.
+              © 2026 TrendWave Connect. All rights reserved.
             </p>
           </div>
         </footer>
