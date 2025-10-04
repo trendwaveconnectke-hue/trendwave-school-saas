@@ -4,47 +4,94 @@ import { useRouter } from 'next/router';
 export default function AdminDashboard() {
   const [school, setSchool] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [stats, setStats] = useState({
+    students: 0,
+    teachers: 0,
+    classes: 0,
+    feeCollection: 0,
+    attendance: 0,
+    parents: 0,
+    staff: 0,
+    security: 0,
+    events: 0
+  });
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
+  // Authentication check
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
-    const schoolName = localStorage.getItem('school_name');
-    const schoolId = localStorage.getItem('school_id');
+    const schoolData = {
+      name: localStorage.getItem('school_name'),
+      id: localStorage.getItem('school_id'),
+      plan: localStorage.getItem('school_plan') || 'trial'
+    };
     
-    if (!token) {
+    if (!token || !schoolData.id) {
       router.push('/auth/login');
       return;
     }
     
-    setSchool({
-      name: schoolName || 'TrendWave Connect School',
-      id: schoolId || 'TWC0001'
-    });
+    setSchool(schoolData);
+    loadDashboardData();
   }, [router]);
 
-  // Quick Actions Data
-  const quickActions = [
-    { icon: '👥', label: 'Students', action: () => setActiveTab('students') },
-    { icon: '👨‍🏫', label: 'Teachers', action: () => setActiveTab('teachers') },
-    { icon: '📚', label: 'Classes', action: () => setActiveTab('classes') },
-    { icon: '💰', label: 'Fees', action: () => setActiveTab('fees') },
-    { icon: '📊', label: 'Grades', action: () => setActiveTab('grades') },
-    { icon: '📅', label: 'Schedule', action: () => setActiveTab('schedule') },
-    { icon: '💬', label: 'Messages', action: () => setActiveTab('messages') },
-    { icon: '⚙️', label: 'Settings', action: () => setActiveTab('settings') }
-  ];
+  const loadDashboardData = async () => {
+    // Simulate API calls - replace with real endpoints
+    const mockStats = {
+      students: 245,
+      teachers: 18,
+      classes: 12,
+      feeCollection: 78,
+      attendance: 92,
+      parents: 280,
+      staff: 8,
+      security: 4,
+      events: 5
+    };
+    
+    const mockActivity = [
+      { type: 'student', action: 'registered', name: 'John Doe', time: '2 hours ago' },
+      { type: 'payment', action: 'completed', name: 'Sarah Smith', amount: '$350', time: '4 hours ago' },
+      { type: 'teacher', action: 'assigned', name: 'Mr. Johnson', class: 'Grade 10B', time: '1 day ago' },
+      { type: 'event', action: 'created', name: 'Sports Day', date: 'Mar 20, 2024', time: '2 days ago' }
+    ];
+
+    setStats(mockStats);
+    setRecentActivity(mockActivity);
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     router.push('/auth/login');
   };
 
+  const quickActions = [
+    { icon: '👥', label: 'Add Student', action: () => setActiveTab('students'), feature: 'students' },
+    { icon: '👨‍🏫', label: 'Add Teacher', action: () => setActiveTab('teachers'), feature: 'teachers' },
+    { icon: '💰', label: 'Collect Fees', action: () => setActiveTab('fees'), feature: 'fees' },
+    { icon: '📊', label: 'Mark Attendance', action: () => setActiveTab('attendance'), feature: 'attendance' },
+    { icon: '📚', label: 'Create Assignment', action: () => setActiveTab('academics'), feature: 'academics' },
+    { icon: '💬', label: 'Send Message', action: () => setActiveTab('communication'), feature: 'communication' },
+    { icon: '📅', label: 'Add Event', action: () => setActiveTab('events'), feature: 'events' },
+    { icon: '📄', label: 'Generate Report', action: () => setActiveTab('reports'), feature: 'reports' }
+  ];
+
+  const isFeatureAvailable = (feature) => {
+    if (school?.plan === 'trial') {
+      const trialFeatures = ['students', 'teachers', 'attendance', 'communication'];
+      return trialFeatures.includes(feature);
+    }
+    return true;
+  };
+
   if (!school) {
     return (
       <div style={styles.loadingContainer}>
         <div style={styles.spinner}></div>
-        <p style={styles.loadingText}>Loading your school dashboard...</p>
-        <GlobalStyles />
+        <p style={styles.loadingText}>Loading School Dashboard...</p>
       </div>
     );
   }
@@ -55,14 +102,33 @@ export default function AdminDashboard() {
       <header style={styles.header}>
         <div style={styles.headerContent}>
           <div style={styles.headerLeft}>
-            <div style={styles.logo}>🎓</div>
+            <div style={styles.logo}>🏫</div>
             <div>
               <h1 style={styles.schoolName}>{school.name}</h1>
-              <p style={styles.schoolId}>ID: {school.id}</p>
+              <p style={styles.schoolId}>ID: {school.id} | Plan: {school.plan}</p>
             </div>
           </div>
+          
+          <div style={styles.headerCenter}>
+            <div style={styles.searchContainer}>
+              <input
+                type="text"
+                placeholder="Search students, teachers, payments..."
+                style={styles.searchInput}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <span style={styles.searchIcon}>🔍</span>
+            </div>
+          </div>
+
           <div style={styles.headerRight}>
-            <button style={styles.notificationBtn}>🔔</button>
+            <button style={styles.notificationBtn}>
+              🔔 <span style={styles.notificationBadge}>3</span>
+            </button>
+            <button style={styles.profileBtn}>
+              👤 Admin
+            </button>
             <button onClick={handleLogout} style={styles.logoutBtn}>
               Logout
             </button>
@@ -70,162 +136,188 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main style={styles.main}>
-        {activeTab === 'dashboard' && (
-          <div style={styles.dashboard}>
-            {/* Stats Cards */}
-            <div style={styles.statsGrid}>
-              <div style={styles.statCard}>
-                <div style={styles.statIcon}>👥</div>
-                <div style={styles.statInfo}>
-                  <h3 style={styles.statNumber}>0</h3>
-                  <p style={styles.statLabel}>Students</p>
+      {/* Main Layout */}
+      <div style={styles.mainLayout}>
+        {/* Sidebar */}
+        <nav style={styles.sidebar}>
+          {[
+            { id: 'dashboard', icon: '📊', label: 'Dashboard' },
+            { id: 'students', icon: '👥', label: 'Students' },
+            { id: 'parents', icon: '👨‍👩‍👧‍👦', label: 'Parents' },
+            { id: 'teachers', icon: '👨‍🏫', label: 'Teachers' },
+            { id: 'staff', icon: '💼', label: 'Staff' },
+            { id: 'security', icon: '🛡️', label: 'Security' },
+            { id: 'events', icon: '📅', label: 'Events' },
+            { id: 'fees', icon: '💰', label: 'Fee Management' },
+            { id: 'attendance', icon: '✅', label: 'Attendance' },
+            { id: 'academics', icon: '📚', label: 'Academics' },
+            { id: 'communication', icon: '💬', label: 'Communication' },
+            { id: 'documents', icon: '📄', label: 'Documents' },
+            { id: 'reports', icon: '📈', label: 'Reports' },
+            { id: 'school-suite', icon: '🏢', label: 'School Suite' },
+            { id: 'settings', icon: '⚙️', label: 'Settings' }
+          ].map((item) => (
+            <button
+              key={item.id}
+              style={{
+                ...styles.sidebarButton,
+                ...(activeTab === item.id && styles.sidebarButtonActive)
+              }}
+              onClick={() => setActiveTab(item.id)}
+            >
+              <span style={styles.sidebarIcon}>{item.icon}</span>
+              <span style={styles.sidebarLabel}>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Main Content */}
+        <main style={styles.mainContent}>
+          {activeTab === 'dashboard' && (
+            <div style={styles.dashboard}>
+              {/* Stats Grid */}
+              <div style={styles.statsGrid}>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>👥</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.students}</h3>
+                    <p style={styles.statLabel}>Students</p>
+                  </div>
+                </div>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>👨‍🏫</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.teachers}</h3>
+                    <p style={styles.statLabel}>Teachers</p>
+                  </div>
+                </div>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>📚</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.classes}</h3>
+                    <p style={styles.statLabel}>Classes</p>
+                  </div>
+                </div>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>💰</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.feeCollection}%</h3>
+                    <p style={styles.statLabel}>Fees Collected</p>
+                  </div>
+                </div>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>✅</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.attendance}%</h3>
+                    <p style={styles.statLabel}>Attendance</p>
+                  </div>
+                </div>
+                <div style={styles.statCard}>
+                  <div style={styles.statIcon}>👨‍👩‍👧‍👦</div>
+                  <div style={styles.statInfo}>
+                    <h3 style={styles.statNumber}>{stats.parents}</h3>
+                    <p style={styles.statLabel}>Parents</p>
+                  </div>
                 </div>
               </div>
-              <div style={styles.statCard}>
-                <div style={styles.statIcon}>👨‍🏫</div>
-                <div style={styles.statInfo}>
-                  <h3 style={styles.statNumber}>0</h3>
-                  <p style={styles.statLabel}>Teachers</p>
+
+              {/* Quick Actions */}
+              <div style={styles.section}>
+                <h2 style={styles.sectionTitle}>Quick Actions</h2>
+                <div style={styles.actionsGrid}>
+                  {quickActions.map((action, index) => {
+                    const isAvailable = isFeatureAvailable(action.feature);
+                    return (
+                      <button
+                        key={index}
+                        onClick={isAvailable ? action.action : () => {}}
+                        style={{
+                          ...styles.actionButton,
+                          ...(!isAvailable && styles.actionButtonDisabled)
+                        }}
+                        title={!isAvailable ? 'Upgrade to access this feature' : ''}
+                      >
+                        <span style={styles.actionIcon}>{action.icon}</span>
+                        <span style={styles.actionLabel}>{action.label}</span>
+                        {!isAvailable && <span style={styles.lockIcon}>🔒</span>}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-              <div style={styles.statCard}>
-                <div style={styles.statIcon}>📚</div>
-                <div style={styles.statInfo}>
-                  <h3 style={styles.statNumber}>0</h3>
-                  <p style={styles.statLabel}>Classes</p>
-                </div>
-              </div>
-              <div style={styles.statCard}>
-                <div style={styles.statIcon}>💰</div>
-                <div style={styles.statInfo}>
-                  <h3 style={styles.statNumber}>0%</h3>
-                  <p style={styles.statLabel}>Fees Paid</p>
+
+              {/* Recent Activity */}
+              <div style={styles.section}>
+                <h2 style={styles.sectionTitle}>Recent Activity</h2>
+                <div style={styles.activityCard}>
+                  {recentActivity.map((activity, index) => (
+                    <div key={index} style={styles.activityItem}>
+                      <span style={styles.activityIcon}>
+                        {activity.type === 'student' && '👥'}
+                        {activity.type === 'payment' && '💰'}
+                        {activity.type === 'teacher' && '👨‍🏫'}
+                        {activity.type === 'event' && '📅'}
+                      </span>
+                      <div style={styles.activityContent}>
+                        <p style={styles.activityText}>
+                          <strong>{activity.name}</strong> {activity.action}
+                          {activity.amount && ` - ${activity.amount}`}
+                          {activity.class && ` to ${activity.class}`}
+                        </p>
+                        <span style={styles.activityTime}>{activity.time}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Quick Actions */}
-            <div style={styles.section}>
-              <h2 style={styles.sectionTitle}>Quick Actions</h2>
-              <div style={styles.actionsGrid}>
-                {quickActions.map((action, index) => (
-                  <button
-                    key={index}
-                    onClick={action.action}
-                    style={styles.actionButton}
-                  >
-                    <span style={styles.actionIcon}>{action.icon}</span>
-                    <span style={styles.actionLabel}>{action.label}</span>
+          {/* Other Tabs Placeholder */}
+          {activeTab !== 'dashboard' && (
+            <div style={styles.tabContent}>
+              <div style={styles.tabHeader}>
+                <h2 style={styles.tabTitle}>
+                  {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Management
+                </h2>
+                <div style={styles.tabActions}>
+                  <button style={styles.primaryButton}>
+                    + Add New
                   </button>
-                ))}
+                  <button style={styles.secondaryButton}>
+                    📤 Export
+                  </button>
+                </div>
+              </div>
+              
+              <div style={styles.comingSoonSection}>
+                <div style={styles.comingSoonIcon}>🚀</div>
+                <h3 style={styles.comingSoonTitle}>
+                  {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Management Coming Soon
+                </h3>
+                <p style={styles.comingSoonText}>
+                  We're building powerful tools for {activeTab} management with advanced features, 
+                  bulk operations, and real-time analytics.
+                </p>
+                {school.plan === 'trial' && !isFeatureAvailable(activeTab) && (
+                  <div style={styles.upgradePrompt}>
+                    <p>🔒 This feature requires a paid plan</p>
+                    <button 
+                      style={styles.upgradeButton}
+                      onClick={() => setActiveTab('school-suite')}
+                    >
+                      Upgrade School Suite
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-
-            {/* Recent Activity */}
-            <div style={styles.section}>
-              <h2 style={styles.sectionTitle}>Recent Activity</h2>
-              <div style={styles.activityCard}>
-                <p style={styles.activityText}>
-                  🎉 Welcome to TrendWave Connect! Your school dashboard is ready.
-                </p>
-                <p style={styles.activityText}>
-                  📝 Start by adding students, teachers, and classes to get started.
-                </p>
-                <p style={styles.activityText}>
-                  💰 Set up fee structure to begin collecting payments.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Other tabs will be implemented next */}
-        {activeTab !== 'dashboard' && (
-          <div style={styles.tabContent}>
-            <h2 style={styles.tabTitle}>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Management</h2>
-            <p style={styles.comingSoon}>
-              🚧 {activeTab} management coming soon...
-            </p>
-          </div>
-        )}
-      </main>
-
-      {/* Bottom Navigation - KCB Style */}
-      <nav style={styles.bottomNav}>
-        <button 
-          style={{
-            ...styles.navButton,
-            ...(activeTab === 'dashboard' && styles.navButtonActive)
-          }}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          <span style={styles.navIcon}>🏠</span>
-          <span style={styles.navLabel}>Home</span>
-        </button>
-        <button 
-          style={{
-            ...styles.navButton,
-            ...(activeTab === 'students' && styles.navButtonActive)
-          }}
-          onClick={() => setActiveTab('students')}
-        >
-          <span style={styles.navIcon}>👥</span>
-          <span style={styles.navLabel}>Students</span>
-        </button>
-        <button 
-          style={{
-            ...styles.navButton,
-            ...(activeTab === 'fees' && styles.navButtonActive)
-          }}
-          onClick={() => setActiveTab('fees')}
-        >
-          <span style={styles.navIcon}>💰</span>
-          <span style={styles.navLabel}>Fees</span>
-        </button>
-        <button 
-          style={{
-            ...styles.navButton,
-            ...(activeTab === 'messages' && styles.navButtonActive)
-          }}
-          onClick={() => setActiveTab('messages')}
-        >
-          <span style={styles.navIcon}>💬</span>
-          <span style={styles.navLabel}>Messages</span>
-        </button>
-      </nav>
-
-      <GlobalStyles />
+          )}
+        </main>
+      </div>
     </div>
   );
 }
-
-// Global Styles Component (FIXED - No document usage)
-const GlobalStyles = () => (
-  <style jsx global>{`
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .feature-card {
-      animation: fadeInUp 0.6s ease-out forwards;
-      opacity: 0;
-    }
-  `}</style>
-);
 
 const styles = {
   container: {
@@ -257,20 +349,23 @@ const styles = {
   header: {
     background: 'white',
     boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-    borderBottom: '1px solid #e5e7eb'
+    borderBottom: '1px solid #e5e7eb',
+    position: 'sticky',
+    top: 0,
+    zIndex: 100
   },
   headerContent: {
-    maxWidth: '1200px',
-    margin: '0 auto',
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '1rem 1.5rem'
+    justifyContent: 'space-between',
+    padding: '1rem 2rem',
+    maxWidth: '100%'
   },
   headerLeft: {
     display: 'flex',
     alignItems: 'center',
-    gap: '1rem'
+    gap: '1rem',
+    flex: 1
   },
   logo: {
     width: '50px',
@@ -294,17 +389,68 @@ const styles = {
     color: '#6B7280',
     margin: 0
   },
+  headerCenter: {
+    flex: 2,
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  searchContainer: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '500px'
+  },
+  searchInput: {
+    width: '100%',
+    padding: '10px 40px 10px 16px',
+    border: '2px solid #e5e7eb',
+    borderRadius: '25px',
+    fontSize: '14px',
+    outline: 'none',
+    transition: 'border-color 0.2s'
+  },
+  searchIcon: {
+    position: 'absolute',
+    right: '12px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: '#6B7280'
+  },
   headerRight: {
     display: 'flex',
     alignItems: 'center',
-    gap: '1rem'
+    gap: '1rem',
+    flex: 1,
+    justifyContent: 'flex-end'
   },
   notificationBtn: {
     background: 'none',
     border: 'none',
     fontSize: '20px',
     cursor: 'pointer',
-    padding: '8px'
+    padding: '8px',
+    position: 'relative'
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: '-5px',
+    right: '-5px',
+    background: '#ef4444',
+    color: 'white',
+    borderRadius: '50%',
+    width: '18px',
+    height: '18px',
+    fontSize: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  profileBtn: {
+    background: 'none',
+    border: '2px solid #e5e7eb',
+    padding: '8px 16px',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    fontWeight: '500'
   },
   logoutBtn: {
     background: '#ef4444',
@@ -315,11 +461,48 @@ const styles = {
     cursor: 'pointer',
     fontWeight: '500'
   },
-  main: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '1.5rem',
-    paddingBottom: '80px'
+  mainLayout: {
+    display: 'flex',
+    minHeight: 'calc(100vh - 80px)'
+  },
+  sidebar: {
+    width: '250px',
+    background: 'white',
+    borderRight: '1px solid #e5e7eb',
+    padding: '1rem 0',
+    overflowY: 'auto'
+  },
+  sidebarButton: {
+    width: '100%',
+    background: 'none',
+    border: 'none',
+    padding: '12px 20px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    transition: 'all 0.2s',
+    color: '#6B7280'
+  },
+  sidebarButtonActive: {
+    background: '#1E3A8A',
+    color: 'white',
+    borderRight: '3px solid #10B981'
+  },
+  sidebarIcon: {
+    fontSize: '18px',
+    width: '24px',
+    textAlign: 'center'
+  },
+  sidebarLabel: {
+    fontSize: '14px',
+    fontWeight: '500'
+  },
+  mainContent: {
+    flex: 1,
+    padding: '2rem',
+    overflowY: 'auto',
+    background: '#f8fafc'
   },
   dashboard: {
     spaceY: '2rem'
@@ -327,7 +510,7 @@ const styles = {
   statsGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1rem',
+    gap: '1.5rem',
     marginBottom: '2rem'
   },
   statCard: {
@@ -338,7 +521,8 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
-    border: '1px solid #e5e7eb'
+    border: '1px solid #e5e7eb',
+    transition: 'transform 0.2s'
   },
   statIcon: {
     fontSize: '2rem',
@@ -366,7 +550,12 @@ const styles = {
     margin: 0
   },
   section: {
-    marginBottom: '2rem'
+    background: 'white',
+    padding: '1.5rem',
+    borderRadius: '12px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    border: '1px solid #e5e7eb',
+    marginBottom: '1.5rem'
   },
   sectionTitle: {
     fontSize: '1.25rem',
@@ -376,7 +565,7 @@ const styles = {
   },
   actionsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
     gap: '1rem'
   },
   actionButton: {
@@ -389,7 +578,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '0.5rem'
+    gap: '0.5rem',
+    position: 'relative'
+  },
+  actionButtonDisabled: {
+    opacity: 0.6,
+    cursor: 'not-allowed',
+    background: '#f9fafb'
   },
   actionIcon: {
     fontSize: '1.5rem'
@@ -399,68 +594,131 @@ const styles = {
     fontWeight: '500',
     color: '#374151'
   },
+  lockIcon: {
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    fontSize: '12px'
+  },
   activityCard: {
-    background: 'white',
-    padding: '1.5rem',
-    borderRadius: '12px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    spaceY: '1rem'
+  },
+  activityItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1rem',
+    padding: '0.75rem',
+    borderRadius: '8px',
+    background: '#f9fafb',
     border: '1px solid #e5e7eb'
   },
+  activityIcon: {
+    fontSize: '1.25rem',
+    background: '#1E3A8A',
+    color: 'white',
+    width: '40px',
+    height: '40px',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  activityContent: {
+    flex: 1
+  },
   activityText: {
-    margin: '0 0 0.5rem 0',
-    color: '#4B5563'
+    margin: '0 0 0.25rem 0',
+    color: '#374151',
+    fontSize: '14px'
+  },
+  activityTime: {
+    fontSize: '12px',
+    color: '#6B7280'
   },
   tabContent: {
     background: 'white',
-    padding: '2rem',
     borderRadius: '12px',
     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    border: '1px solid #e5e7eb'
+    border: '1px solid #e5e7eb',
+    minHeight: '500px'
+  },
+  tabHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1.5rem 2rem',
+    borderBottom: '1px solid #e5e7eb'
   },
   tabTitle: {
     fontSize: '1.5rem',
     fontWeight: '600',
     color: '#1F2937',
-    margin: '0 0 1rem 0'
+    margin: 0
   },
-  comingSoon: {
-    color: '#6B7280',
-    fontSize: '1rem',
-    textAlign: 'center',
-    padding: '2rem'
-  },
-  bottomNav: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    background: 'white',
-    borderTop: '1px solid #e5e7eb',
+  tabActions: {
     display: 'flex',
-    justifyContent: 'space-around',
-    padding: '0.5rem 0',
-    boxShadow: '0 -2px 10px rgba(0,0,0,0.1)'
+    gap: '1rem'
   },
-  navButton: {
-    background: 'none',
+  primaryButton: {
+    background: '#1E3A8A',
+    color: 'white',
     border: 'none',
-    padding: '0.5rem',
+    padding: '10px 20px',
+    borderRadius: '8px',
     cursor: 'pointer',
+    fontWeight: '500',
+    fontSize: '14px'
+  },
+  secondaryButton: {
+    background: 'white',
+    color: '#374151',
+    border: '2px solid #e5e7eb',
+    padding: '10px 20px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: '500',
+    fontSize: '14px'
+  },
+  comingSoonSection: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '0.25rem',
-    flex: 1,
-    transition: 'all 0.2s'
+    justifyContent: 'center',
+    padding: '4rem 2rem',
+    textAlign: 'center'
   },
-  navButtonActive: {
-    color: '#1E3A8A'
+  comingSoonIcon: {
+    fontSize: '4rem',
+    marginBottom: '1rem'
   },
-  navIcon: {
-    fontSize: '1.25rem'
+  comingSoonTitle: {
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    color: '#1F2937',
+    margin: '0 0 1rem 0'
   },
-  navLabel: {
-    fontSize: '0.75rem',
-    fontWeight: '500'
+  comingSoonText: {
+    color: '#6B7280',
+    fontSize: '1rem',
+    maxWidth: '500px',
+    lineHeight: '1.6'
+  },
+  upgradePrompt: {
+    marginTop: '2rem',
+    padding: '1.5rem',
+    background: '#fef3f2',
+    border: '1px solid #fecaca',
+    borderRadius: '8px',
+    textAlign: 'center'
+  },
+  upgradeButton: {
+    background: '#dc2626',
+    color: 'white',
+    border: 'none',
+    padding: '10px 20px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: '500',
+    marginTop: '1rem'
   }
 };
