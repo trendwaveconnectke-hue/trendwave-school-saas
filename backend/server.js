@@ -1,114 +1,113 @@
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const { Pool } = require('pg');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Add a test route to verify server is running
-app.get('/', (req, res) => {
-  res.json({ message: 'TrendWave Connect API is running!' });
+// PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-// Connect to MongoDB with better error handling
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/schoolsaas';
-
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('✅ MongoDB connected successfully');
-  })
-  .catch((error) => {
-    console.log('❌ MongoDB connection failed:', error.message);
-  });
-
-// School Schema
-const schoolSchema = new mongoose.Schema({
-  schoolCode: { type: String, unique: true },
-  name: String,
-  plan: { type: String, default: 'starter' },
-  adminEmail: String,
-  isActive: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const userSchema = new mongoose.Schema({
-  schoolId: mongoose.ObjectId,
-  email: String,
-  password: String,
-  role: String,
-  name: String,
-  isActive: { type: Boolean, default: true }
-});
-
-const School = mongoose.model('School', schoolSchema);
-const User = mongoose.model('User', userSchema);
-
-// Create School Endpoint
-app.post('/api/admin/schools', async (req, res) => {
+// Test database connection
+app.get('/api/test-db', async (req, res) => {
   try {
-    const { name, adminEmail, schoolCode, plan } = req.body;
-    
-    const school = new School({ name, adminEmail, schoolCode, plan });
-    await school.save();
-    
-    const hashedPassword = await bcrypt.hash('temp123', 10);
-    const adminUser = new User({
-      schoolId: school._id,
-      email: adminEmail,
-      password: hashedPassword,
-      role: 'admin',
-      name: 'School Admin'
-    });
-    await adminUser.save();
-    
+    const result = await pool.query('SELECT NOW() as current_time');
     res.json({ 
       success: true, 
-      school, 
-      tempPassword: 'temp123'
+      message: 'Database connected successfully!',
+      time: result.rows[0].current_time,
+      database: 'PostgreSQL'
     });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    res.status(500).json({ 
+      success: false, 
+      error: 'Database connection failed',
+      details: error.message 
+    });
   }
 });
 
-// Get All Schools
-app.get('/api/admin/schools', async (req, res) => {
+// Create schools table if not exists
+app.get('/api/create-tables', async (req, res) => {
   try {
-    const schools = await School.find();
-    res.json(schools);
+    const query = `
+      CREATE TABLE IF NOT EXISTS schools (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        country VARCHAR(100) NOT NULL,
+        region VARCHAR(100) NOT NULL,
+        phone VARCHAR(50),
+        admin_name VARCHAR(255) NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        temporary_password VARCHAR(100),
+        login_url VARCHAR(500)
+      );
+    `;
+    
+    await pool.query(query);
+    res.json({ success: true, message: 'Schools table created successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Database error' });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// School Login
-app.post('/api/login', async (req, res) => {
+// Basic school registration
+app.post('/api/schools/register', async (req, res) => {
   try {
-    const { schoolCode, email, password } = req.body;
+    const { name, email, country, region, phone, admin_name } = req.body;
     
-    const school = await School.findOne({ schoolCode });
-    if (!school) return res.status(400).json({ error: 'School not found' });
+    // Generate temporary password
+    const tempPassword = Math.random().toString(36).slice(-8);
+    const loginUrl = 'https://trendwaveconnect.vercel.app/auth/login';
     
-    const user = await User.findOne({ schoolId: school._id, email });
-    if (!user) return res.status(400).json({ error: 'User not found' });
-    
-    const validPass = await bcrypt.compare(password, user.password);
-    if (!validPass) return res.status(400).json({ error: 'Invalid password' });
-    
-    const token = jwt.sign(
-      { userId: user._id, schoolId: school._id, role: user.role },
-      process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: '24h' }
+    const result = await pool.query(
+      `INSERT INTO schools (name, email, country, region, phone, admin_name, temporary_password, login_url) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [name, email, country, region, phone, admin_name, tempPassword, loginUrl]
     );
     
-    res.json({ token, user, school });
+    console.log('School registered:', result.rows[0].name);
+    
+    res.json({
+      success: true,
+      message: 'School registered successfully!',
+      school: result.rows[0]
+    });
+    
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Registration error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Registration failed',
+      error: error.message 
+    });
   }
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'TrendWave Connect API is running!',
+    endpoints: {
+      testDb: '/api/test-db',
+      createTables: '/api/create-tables', 
+      registerSchool: '/api/schools/register'
+    }
+  });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
