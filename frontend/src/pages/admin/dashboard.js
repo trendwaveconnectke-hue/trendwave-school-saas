@@ -44,6 +44,7 @@ export default function AdminDashboard() {
       <div style={styles.loadingContainer}>
         <div style={styles.spinner}></div>
         <p style={styles.loadingText}>Loading your school dashboard...</p>
+        <GlobalStyles />
       </div>
     );
   }
@@ -194,9 +195,37 @@ export default function AdminDashboard() {
           <span style={styles.navLabel}>Messages</span>
         </button>
       </nav>
+
+      <GlobalStyles />
     </div>
   );
 }
+
+// Global Styles Component (FIXED - No document usage)
+const GlobalStyles = () => (
+  <style jsx global>{`
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .feature-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+  `}</style>
+);
 
 const styles = {
   container: {
@@ -290,7 +319,7 @@ const styles = {
     maxWidth: '1200px',
     margin: '0 auto',
     padding: '1.5rem',
-    paddingBottom: '80px' // Space for bottom nav
+    paddingBottom: '80px'
   },
   dashboard: {
     spaceY: '2rem'
@@ -435,12 +464,3 @@ const styles = {
     fontWeight: '500'
   }
 };
-
-// Add CSS animation
-const styleSheet = document.styleSheets[0];
-styleSheet.insertRule(`
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`, styleSheet.cssRules.length);
