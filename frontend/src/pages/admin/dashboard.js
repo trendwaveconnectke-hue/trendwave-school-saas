@@ -387,7 +387,7 @@ const setRealisticData = () => {
                 </div>
               </div>
 
-              <div style={styles.miniStats}>
+          <div style={styles.miniStats}>
   <div style={styles.miniStat}>
     <span style={styles.miniStatNumber}>{stats.students}</span>
     <span style={styles.miniStatLabel}>Total Students</span>
@@ -404,6 +404,7 @@ const setRealisticData = () => {
     <span style={styles.miniStatNumber}>{stats.attendance}%</span>
     <span style={styles.miniStatLabel}>Attendance</span>
   </div>
+</div>
               </div>
 
               {/* Students Table */}
