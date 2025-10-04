@@ -38,89 +38,28 @@ export default function AdminDashboard() {
   }, [router]);
 
   const loadDashboardData = async () => {
-  try {
-    const token = localStorage.getItem('admin_token');
-    const schoolId = localStorage.getItem('school_id');
+    // Simulate API calls - replace with real endpoints
+    const mockStats = {
+      students: 245,
+      teachers: 18,
+      classes: 12,
+      feeCollection: 78,
+      attendance: 92,
+      parents: 280,
+      staff: 8,
+      security: 4,
+      events: 5
+    };
     
-    // REAL API CALLS - Replace with your actual endpoints
-    const response = await fetch(`/api/schools/${schoolId}/dashboard`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    if (response.ok) {
-      const realData = await response.json();
-      
-      setStats({
-        students: realData.totalStudents || 0,
-        teachers: realData.totalTeachers || 0,
-        classes: realData.totalClasses || 0,
-        feeCollection: realData.feeCollectionRate || 0,
-        attendance: realData.dailyAttendance || 0,
-        parents: realData.totalParents || 0,
-        staff: realData.totalStaff || 0,
-        security: realData.securityPersonnel || 0,
-        events: realData.upcomingEvents || 0
-      });
-      
-      setRecentActivity(realData.recentActivity || []);
-    } else {
-      // Fallback to realistic school data
-      setRealisticData();
-    }
-  } catch (error) {
-    // Fallback to realistic school data
-    setRealisticData();
-  }
-};
+    const mockActivity = [
+      { type: 'student', action: 'registered', name: 'John Doe', time: '2 hours ago' },
+      { type: 'payment', action: 'completed', name: 'Sarah Smith', amount: '$350', time: '4 hours ago' },
+      { type: 'teacher', action: 'assigned', name: 'Mr. Johnson', class: 'Grade 10B', time: '1 day ago' },
+      { type: 'event', action: 'created', name: 'Sports Day', date: 'Mar 20, 2024', time: '2 days ago' }
+    ];
 
-const setRealisticData = () => {
-  // REALISTIC SCHOOL DATA (not demo)
-  const realisticStats = {
-    students: 324,
-    teachers: 24,
-    classes: 18,
-    feeCollection: 82,
-    attendance: 94,
-    parents: 310,
-    staff: 12,
-    security: 6,
-    events: 3
-  };
-  
-  const realisticActivity = [
-    { 
-      type: 'student', 
-      action: 'enrolled', 
-      name: 'David Kamau', 
-      details: 'Grade 7B',
-      time: new Date().toLocaleTimeString() 
-    },
-    { 
-      type: 'payment', 
-      action: 'processed', 
-      name: 'Grace Wanjiku', 
-      amount: 'KSh 15,800', 
-      time: new Date(Date.now() - 2 * 60 * 60 * 1000).toLocaleTimeString()
-    },
-    { 
-      type: 'attendance', 
-      action: 'marked', 
-      name: 'Grade 10A', 
-      details: '94% present',
-      time: new Date(Date.now() - 4 * 60 * 60 * 1000).toLocaleTimeString()
-    },
-    { 
-      type: 'teacher', 
-      action: 'assigned', 
-      name: 'Mr. Otieno', 
-      details: 'Mathematics - Grade 9C',
-      time: new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleDateString()
-    }
-  ];
-
-  setStats(realisticStats);
-  setRecentActivity(realisticActivity);
-};
+    setStats(mockStats);
+    setRecentActivity(mockActivity);
   };
 
   const handleLogout = () => {
@@ -387,24 +326,25 @@ const setRealisticData = () => {
                 </div>
               </div>
 
-          <div style={styles.miniStats}>
-  <div style={styles.miniStat}>
-    <span style={styles.miniStatNumber}>{stats.students}</span>
-    <span style={styles.miniStatLabel}>Total Students</span>
-  </div>
-  <div style={styles.miniStat}>
-    <span style={styles.miniStatNumber}>{stats.students - 15}</span>
-    <span style={styles.miniStatLabel}>Active</span>
-  </div>
-  <div style={styles.miniStat}>
-    <span style={styles.miniStatNumber}>15</span>
-    <span style={styles.miniStatLabel}>Balance Due</span>
-  </div>
-  <div style={styles.miniStat}>
-    <span style={styles.miniStatNumber}>{stats.attendance}%</span>
-    <span style={styles.miniStatLabel}>Attendance</span>
-  </div>
-</div>
+              {/* Students Stats */}
+              <div style={styles.miniStats}>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>245</span>
+                  <span style={styles.miniStatLabel}>Total Students</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>238</span>
+                  <span style={styles.miniStatLabel}>Active</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>7</span>
+                  <span style={styles.miniStatLabel}>Inactive</span>
+                </div>
+                <div style={styles.miniStat}>
+                  <span style={styles.miniStatNumber}>92%</span>
+                  <span style={styles.miniStatLabel}>Attendance</span>
+                </div>
+              </div>
 
               {/* Students Table */}
               <div style={styles.tableContainer}>
@@ -423,170 +363,132 @@ const setRealisticData = () => {
                     </tr>
                   </thead>
                   <tbody>
-  {/* REAL STUDENT DATA */}
-  <tr style={styles.tableRow}>
-    <td style={styles.tableCell}>
-      <input type="checkbox" style={styles.checkbox} />
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.studentInfo}>
-        <div style={styles.avatar}>DK</div>
-        <div>
-          <div style={styles.studentName}>David Kamau</div>
-          <div style={styles.studentId}>ID: {school.id}-ST001</div>
-        </div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.classBadge}>Grade 7B</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.parentInfo}>
-        <div style={styles.parentName}>Grace Kamau</div>
-        <div style={styles.relationship}>Mother</div>
-      </div>
-    <td style={styles.tableCell}>
-      <div style={styles.contactInfo}>
-        <div>📞 +254 711 234 567</div>
-        <div>📧 grace.kamau@email.com</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.statusActive}>Active</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.actionButtons}>
-        <button style={styles.iconButton} title="View Profile">👁️</button>
-        <button style={styles.iconButton} title="Edit">✏️</button>
-        <button style={styles.iconButton} title="Message Parent">💬</button>
-        <button style={styles.iconButton} title="View Records">📊</button>
-      </div>
-    </td>
-  </tr>
+                    {/* Student Row 1 */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={styles.avatar}>JD</div>
+                          <div>
+                            <div style={styles.studentName}>John Doe</div>
+                            <div style={styles.studentId}>ID: TWC001</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 10B</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Jane Doe</div>
+                          <div style={styles.relationship}>Mother</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 712 345 678</div>
+                          <div>📧 jane@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusActive}>Active</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Message">💬</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
 
-  <tr style={styles.tableRow}>
-    <td style={styles.tableCell}>
-      <input type="checkbox" style={styles.checkbox} />
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.studentInfo}>
-        <div style={styles.avatar}>AW</div>
-        <div>
-          <div style={styles.studentName}>Amina Wanjiru</div>
-          <div style={styles.studentId}>ID: {school.id}-ST002</div>
-        </div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.classBadge}>Grade 9A</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.parentInfo}>
-        <div style={styles.parentName}>James Wanjiru</div>
-        <div style={styles.relationship}>Father</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.contactInfo}>
-        <div>📞 +254 722 345 678</div>
-        <div>📧 james.w@email.com</div>
-      </div>
-    </td>
-    <td style={styles.statusActive}>
-      <span style={styles.statusActive}>Active</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.actionButtons}>
-        <button style={styles.iconButton} title="View Profile">👁️</button>
-        <button style={styles.iconButton} title="Edit">✏️</button>
-        <button style={styles.iconButton} title="Message Parent">💬</button>
-        <button style={styles.iconButton} title="View Records">📊</button>
-      </div>
-    </td>
-  </tr>
+                    {/* Student Row 2 */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={styles.avatar}>SM</div>
+                          <div>
+                            <div style={styles.studentName}>Sarah Smith</div>
+                            <div style={styles.studentId}>ID: TWC002</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 9A</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Robert Smith</div>
+                          <div style={styles.relationship}>Father</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 723 456 789</div>
+                          <div>📧 robert@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusActive}>Active</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Message">💬</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
 
-  <tr style={styles.tableRow}>
-    <td style={styles.tableCell}>
-      <input type="checkbox" style={styles.checkbox} />
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.studentInfo}>
-        <div style={{...styles.avatar, background: '#f59e0b'}}>KO</div>
-        <div>
-          <div style={styles.studentName}>Kevin Ochieng</div>
-          <div style={styles.studentId}>ID: {school.id}-ST003</div>
-        </div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.classBadge}>Grade 11C</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.parentInfo}>
-        <div style={styles.parentName}>Sarah Ochieng</div>
-        <div style={styles.relationship}>Mother</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.contactInfo}>
-        <div>📞 +254 733 456 789</div>
-        <div>📧 sarah.ochieng@email.com</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.statusWarning}>Balance: KSh 12,500</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.actionButtons}>
-        <button style={styles.iconButton} title="View Profile">👁️</button>
-        <button style={styles.iconButton} title="Edit">✏️</button>
-        <button style={styles.iconButton} title="Collect Fee">💰</button>
-        <button style={styles.iconButton} title="Payment Plan">📅</button>
-      </div>
-    </td>
-  </tr>
-
-  <tr style={styles.tableRow}>
-    <td style={styles.tableCell}>
-      <input type="checkbox" style={styles.checkbox} />
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.studentInfo}>
-        <div style={styles.avatar}>FM</div>
-        <div>
-          <div style={styles.studentName}>Faith Mwende</div>
-          <div style={styles.studentId}>ID: {school.id}-ST004</div>
-        </div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.classBadge}>Grade 8B</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.parentInfo}>
-        <div style={styles.parentName}>Peter Mwende</div>
-        <div style={styles.relationship}>Father</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.contactInfo}>
-        <div>📞 +254 744 567 890</div>
-        <div>📧 peter.mwende@email.com</div>
-      </div>
-    </td>
-    <td style={styles.tableCell}>
-      <span style={styles.statusActive}>Active</span>
-    </td>
-    <td style={styles.tableCell}>
-      <div style={styles.actionButtons}>
-        <button style={styles.iconButton} title="View Profile">👁️</button>
-        <button style={styles.iconButton} title="Edit">✏️</button>
-        <button style={styles.iconButton} title="Message Parent">💬</button>
-        <button style={styles.iconButton} title="View Records">📊</button>
-      </div>
-    </td>
-  </tr>
-</tbody>
+                    {/* Student Row 3 - Fee Pending */}
+                    <tr style={styles.tableRow}>
+                      <td style={styles.tableCell}>
+                        <input type="checkbox" style={styles.checkbox} />
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.studentInfo}>
+                          <div style={{...styles.avatar, background: '#f59e0b'}}>MJ</div>
+                          <div>
+                            <div style={styles.studentName}>Michael Johnson</div>
+                            <div style={styles.studentId}>ID: TWC003</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.classBadge}>Grade 11C</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.parentInfo}>
+                          <div style={styles.parentName}>Lisa Johnson</div>
+                          <div style={styles.relationship}>Mother</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.contactInfo}>
+                          <div>📞 +254 734 567 890</div>
+                          <div>📧 lisa@email.com</div>
+                        </div>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <span style={styles.statusWarning}>Fee Pending</span>
+                      </td>
+                      <td style={styles.tableCell}>
+                        <div style={styles.actionButtons}>
+                          <button style={styles.iconButton} title="View Profile">👁️</button>
+                          <button style={styles.iconButton} title="Edit">✏️</button>
+                          <button style={styles.iconButton} title="Collect Fee">💰</button>
+                          <button style={styles.iconButton} title="More">⋯</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
 
