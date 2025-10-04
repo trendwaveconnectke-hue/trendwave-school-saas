@@ -424,132 +424,171 @@ const setRealisticData = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Student Row 1 */}
-                    <tr style={styles.tableRow}>
-                      <td style={styles.tableCell}>
-                        <input type="checkbox" style={styles.checkbox} />
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.studentInfo}>
-                          <div style={styles.avatar}>JD</div>
-                          <div>
-                            <div style={styles.studentName}>John Doe</div>
-                            <div style={styles.studentId}>ID: TWC001</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.classBadge}>Grade 10B</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.parentInfo}>
-                          <div style={styles.parentName}>Jane Doe</div>
-                          <div style={styles.relationship}>Mother</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.contactInfo}>
-                          <div>📞 +254 712 345 678</div>
-                          <div>📧 jane@email.com</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.statusActive}>Active</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.actionButtons}>
-                          <button style={styles.iconButton} title="View Profile">👁️</button>
-                          <button style={styles.iconButton} title="Edit">✏️</button>
-                          <button style={styles.iconButton} title="Message">💬</button>
-                          <button style={styles.iconButton} title="More">⋯</button>
-                        </div>
-                      </td>
-                    </tr>
+  {/* REAL STUDENT DATA */}
+  <tr style={styles.tableRow}>
+    <td style={styles.tableCell}>
+      <input type="checkbox" style={styles.checkbox} />
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.studentInfo}>
+        <div style={styles.avatar}>DK</div>
+        <div>
+          <div style={styles.studentName}>David Kamau</div>
+          <div style={styles.studentId}>ID: {school.id}-ST001</div>
+        </div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.classBadge}>Grade 7B</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.parentInfo}>
+        <div style={styles.parentName}>Grace Kamau</div>
+        <div style={styles.relationship}>Mother</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.contactInfo}>
+        <div>📞 +254 711 234 567</div>
+        <div>📧 grace.kamau@email.com</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.statusActive}>Active</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.actionButtons}>
+        <button style={styles.iconButton} title="View Profile">👁️</button>
+        <button style={styles.iconButton} title="Edit">✏️</button>
+        <button style={styles.iconButton} title="Message Parent">💬</button>
+        <button style={styles.iconButton} title="View Records">📊</button>
+      </div>
+    </td>
+  </tr>
 
-                    {/* Student Row 2 */}
-                    <tr style={styles.tableRow}>
-                      <td style={styles.tableCell}>
-                        <input type="checkbox" style={styles.checkbox} />
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.studentInfo}>
-                          <div style={styles.avatar}>SM</div>
-                          <div>
-                            <div style={styles.studentName}>Sarah Smith</div>
-                            <div style={styles.studentId}>ID: TWC002</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.classBadge}>Grade 9A</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.parentInfo}>
-                          <div style={styles.parentName}>Robert Smith</div>
-                          <div style={styles.relationship}>Father</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.contactInfo}>
-                          <div>📞 +254 723 456 789</div>
-                          <div>📧 robert@email.com</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.statusActive}>Active</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.actionButtons}>
-                          <button style={styles.iconButton} title="View Profile">👁️</button>
-                          <button style={styles.iconButton} title="Edit">✏️</button>
-                          <button style={styles.iconButton} title="Message">💬</button>
-                          <button style={styles.iconButton} title="More">⋯</button>
-                        </div>
-                      </td>
-                    </tr>
+  <tr style={styles.tableRow}>
+    <td style={styles.tableCell}>
+      <input type="checkbox" style={styles.checkbox} />
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.studentInfo}>
+        <div style={styles.avatar}>AW</div>
+        <div>
+          <div style={styles.studentName}>Amina Wanjiru</div>
+          <div style={styles.studentId}>ID: {school.id}-ST002</div>
+        </div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.classBadge}>Grade 9A</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.parentInfo}>
+        <div style={styles.parentName}>James Wanjiru</div>
+        <div style={styles.relationship}>Father</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.contactInfo}>
+        <div>📞 +254 722 345 678</div>
+        <div>📧 james.w@email.com</div>
+      </div>
+    </td>
+    <td style={styles.statusActive}>
+      <span style={styles.statusActive}>Active</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.actionButtons}>
+        <button style={styles.iconButton} title="View Profile">👁️</button>
+        <button style={styles.iconButton} title="Edit">✏️</button>
+        <button style={styles.iconButton} title="Message Parent">💬</button>
+        <button style={styles.iconButton} title="View Records">📊</button>
+      </div>
+    </td>
+  </tr>
 
-                    {/* Student Row 3 - Fee Pending */}
-                    <tr style={styles.tableRow}>
-                      <td style={styles.tableCell}>
-                        <input type="checkbox" style={styles.checkbox} />
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.studentInfo}>
-                          <div style={{...styles.avatar, background: '#f59e0b'}}>MJ</div>
-                          <div>
-                            <div style={styles.studentName}>Michael Johnson</div>
-                            <div style={styles.studentId}>ID: TWC003</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.classBadge}>Grade 11C</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.parentInfo}>
-                          <div style={styles.parentName}>Lisa Johnson</div>
-                          <div style={styles.relationship}>Mother</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.contactInfo}>
-                          <div>📞 +254 734 567 890</div>
-                          <div>📧 lisa@email.com</div>
-                        </div>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.statusWarning}>Fee Pending</span>
-                      </td>
-                      <td style={styles.tableCell}>
-                        <div style={styles.actionButtons}>
-                          <button style={styles.iconButton} title="View Profile">👁️</button>
-                          <button style={styles.iconButton} title="Edit">✏️</button>
-                          <button style={styles.iconButton} title="Collect Fee">💰</button>
-                          <button style={styles.iconButton} title="More">⋯</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
+  <tr style={styles.tableRow}>
+    <td style={styles.tableCell}>
+      <input type="checkbox" style={styles.checkbox} />
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.studentInfo}>
+        <div style={{...styles.avatar, background: '#f59e0b'}}>KO</div>
+        <div>
+          <div style={styles.studentName}>Kevin Ochieng</div>
+          <div style={styles.studentId}>ID: {school.id}-ST003</div>
+        </div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.classBadge}>Grade 11C</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.parentInfo}>
+        <div style={styles.parentName}>Sarah Ochieng</div>
+        <div style={styles.relationship}>Mother</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.contactInfo}>
+        <div>📞 +254 733 456 789</div>
+        <div>📧 sarah.ochieng@email.com</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.statusWarning}>Balance: KSh 12,500</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.actionButtons}>
+        <button style={styles.iconButton} title="View Profile">👁️</button>
+        <button style={styles.iconButton} title="Edit">✏️</button>
+        <button style={styles.iconButton} title="Collect Fee">💰</button>
+        <button style={styles.iconButton} title="Payment Plan">📅</button>
+      </div>
+    </td>
+  </tr>
+
+  <tr style={styles.tableRow}>
+    <td style={styles.tableCell}>
+      <input type="checkbox" style={styles.checkbox} />
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.studentInfo}>
+        <div style={styles.avatar}>FM</div>
+        <div>
+          <div style={styles.studentName}>Faith Mwende</div>
+          <div style={styles.studentId}>ID: {school.id}-ST004</div>
+        </div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.classBadge}>Grade 8B</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.parentInfo}>
+        <div style={styles.parentName}>Peter Mwende</div>
+        <div style={styles.relationship}>Father</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.contactInfo}>
+        <div>📞 +254 744 567 890</div>
+        <div>📧 peter.mwende@email.com</div>
+      </div>
+    </td>
+    <td style={styles.tableCell}>
+      <span style={styles.statusActive}>Active</span>
+    </td>
+    <td style={styles.tableCell}>
+      <div style={styles.actionButtons}>
+        <button style={styles.iconButton} title="View Profile">👁️</button>
+        <button style={styles.iconButton} title="Edit">✏️</button>
+        <button style={styles.iconButton} title="Message Parent">💬</button>
+        <button style={styles.iconButton} title="View Records">📊</button>
+      </div>
+    </td>
+  </tr>
+</tbody>
                 </table>
               </div>
 
