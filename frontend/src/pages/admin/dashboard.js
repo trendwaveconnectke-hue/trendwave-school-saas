@@ -145,8 +145,10 @@ export default function AdminDashboard() {
         <button onClick={handleLogout} style={styles.dropdownItemLogout}>
           🚪 Logout
         </button>
-      </div>
     </div>
+    </div>
+  </div>
+</div>
       </header>
 
       {/* Main Layout */}
