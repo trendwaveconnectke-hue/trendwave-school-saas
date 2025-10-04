@@ -3,13 +3,18 @@ import { useRouter } from 'next/router';
 
 export default function ProfessionalLogin() {
   const [formData, setFormData] = useState({
+    schoolId: '',
     email: '',
     password: ''
   });
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [captchaAnswer, setCaptchaAnswer] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  // Generate simple math captcha
+  const captchaQuestion = "20 + 90";
+  const correctAnswer = "110";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,17 +22,19 @@ export default function ProfessionalLogin() {
       ...prev,
       [name]: value
     }));
-    // Clear errors when user types
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
+    
+    if (!formData.schoolId) {
+      newErrors.schoolId = 'School ID is required';
+    } else if (!formData.schoolId.startsWith('TWC')) {
+      newErrors.schoolId = 'School ID must start with TWC';
+    }
     
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -39,8 +46,10 @@ export default function ProfessionalLogin() {
       newErrors.password = 'Password is required';
     }
     
-    if (!agreeToTerms) {
-      newErrors.terms = 'You must agree to the Terms and Conditions';
+    if (!captchaAnswer) {
+      newErrors.captcha = 'Please solve the math problem';
+    } else if (captchaAnswer !== correctAnswer) {
+      newErrors.captcha = 'Incorrect answer. Please try again.';
     }
     
     setErrors(newErrors);
@@ -63,6 +72,7 @@ export default function ProfessionalLogin() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          school_id: formData.schoolId.toUpperCase(),
           email: formData.email.trim().toLowerCase(),
           password: formData.password
         }),
@@ -71,10 +81,13 @@ export default function ProfessionalLogin() {
       const data = await response.json();
       
       if (data.success && data.token) {
-        // Store authentication data securely
+        // Store authentication data
         localStorage.setItem('admin_token', data.token);
         localStorage.setItem('school_id', data.school.id);
         localStorage.setItem('school_name', data.school.name);
+        
+        // Show success message
+        alert('✅ Login successful! Redirecting to dashboard...');
         
         // Redirect to admin dashboard
         router.push('/admin/dashboard');
@@ -100,8 +113,27 @@ export default function ProfessionalLogin() {
 
         {/* Login Form */}
         <form onSubmit={handleLogin} style={styles.form}>
+          {/* School ID */}
           <div style={styles.inputGroup}>
-            <label style={styles.label}>School Email Address</label>
+            <label style={styles.label}>School ID</label>
+            <input
+              type="text"
+              name="schoolId"
+              value={formData.schoolId}
+              onChange={handleInputChange}
+              placeholder="TWC0001"
+              style={{
+                ...styles.input,
+                ...(errors.schoolId && styles.inputError)
+              }}
+              autoComplete="username"
+            />
+            {errors.schoolId && <span style={styles.errorText}>{errors.schoolId}</span>}
+          </div>
+
+          {/* Email */}
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Email Address</label>
             <input
               type="email"
               name="email"
@@ -112,11 +144,12 @@ export default function ProfessionalLogin() {
                 ...styles.input,
                 ...(errors.email && styles.inputError)
               }}
-              autoComplete="username"
+              autoComplete="email"
             />
             {errors.email && <span style={styles.errorText}>{errors.email}</span>}
           </div>
 
+          {/* Password */}
           <div style={styles.inputGroup}>
             <label style={styles.label}>Password</label>
             <input
@@ -134,18 +167,20 @@ export default function ProfessionalLogin() {
             {errors.password && <span style={styles.errorText}>{errors.password}</span>}
           </div>
 
-          {/* Terms and Conditions */}
-          <div style={styles.termsGroup}>
-            <label style={styles.termsLabel}>
-              <input
-                type="checkbox"
-                checked={agreeToTerms}
-                onChange={(e) => setAgreeToTerms(e.target.checked)}
-                style={styles.checkbox}
-              />
-              I agree to the <a href="/terms" style={styles.link}>Terms and Conditions</a>
-            </label>
-            {errors.terms && <span style={styles.errorText}>{errors.terms}</span>}
+          {/* reCAPTCHA - Math Problem */}
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Security Check: {captchaQuestion} = ?</label>
+            <input
+              type="text"
+              value={captchaAnswer}
+              onChange={(e) => setCaptchaAnswer(e.target.value)}
+              placeholder="Enter the answer"
+              style={{
+                ...styles.input,
+                ...(errors.captcha && styles.inputError)
+              }}
+            />
+            {errors.captcha && <span style={styles.errorText}>{errors.captcha}</span>}
           </div>
 
           {/* Submit Button */}
@@ -157,11 +192,18 @@ export default function ProfessionalLogin() {
               ...(isLoading && styles.buttonDisabled)
             }}
           >
-            {isLoading ? 'Signing In...' : 'Sign In to Admin Portal'}
+            {isLoading ? '🔐 Signing In...' : '🚀 Sign In to Admin Portal'}
           </button>
 
           {errors.submit && <span style={styles.errorText}>{errors.submit}</span>}
         </form>
+
+        {/* Links */}
+        <div style={styles.links}>
+          <a href="/auth/forgot-password" style={styles.link}>Forgot Password?</a>
+          <span style={styles.separator}>•</span>
+          <a href="/privacy-policy" style={styles.link}>Privacy Policy</a>
+        </div>
 
         {/* About Us Section */}
         <div style={styles.aboutSection}>
@@ -172,22 +214,17 @@ export default function ProfessionalLogin() {
           <p style={styles.aboutText}>
             TrendWave Connect is a comprehensive school management platform designed specifically for African educational institutions. We provide schools with modern tools to streamline administration, enhance learning experiences, and foster community engagement.
           </p>
-          <p style={styles.aboutText}>
-            <strong>Our Mission:</strong> To bridge the digital divide in African education by providing affordable, accessible, and locally-relevant technology solutions that transform how schools operate and students learn.
-          </p>
-          <p style={styles.aboutText}>
-            <strong>Built for Africa, Ready for the World</strong> - Our platform understands the unique challenges and opportunities in African education, offering solutions that work within local infrastructure while preparing students for global opportunities.
-          </p>
         </div>
 
-        {/* Footer Links */}
+        {/* Footer */}
         <div style={styles.footer}>
           <p style={styles.footerText}>
             Don't have an account? <a href="https://trendwaveconnect.com" style={styles.link}>Visit trendwaveconnect.com</a>
           </p>
           <p style={styles.footerText}>
-            <a href="/privacy-policy" style={styles.link}>Privacy Policy</a> • 
-            Support: <a href="mailto:support@trendwaveconnect.com" style={styles.link}>support@trendwaveconnect.com</a> • 
+            Support: <a href="mailto:support@trendwaveconnect.com" style={styles.link}>support@trendwaveconnect.com</a>
+          </p>
+          <p style={styles.footerText}>
             Contact: <a href="mailto:contact@trendwaveconnect.com" style={styles.link}>contact@trendwaveconnect.com</a>
           </p>
         </div>
@@ -207,7 +244,7 @@ const styles = {
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
   card: {
-    maxWidth: '480px',
+    maxWidth: '450px',
     width: '100%',
     background: 'white',
     borderRadius: '12px',
@@ -246,7 +283,7 @@ const styles = {
     fontWeight: '500'
   },
   form: {
-    marginBottom: '32px'
+    marginBottom: '24px'
   },
   inputGroup: {
     marginBottom: '20px'
@@ -277,19 +314,6 @@ const styles = {
     marginTop: '4px',
     display: 'block'
   },
-  termsGroup: {
-    marginBottom: '24px'
-  },
-  termsLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '14px',
-    color: '#374151',
-    cursor: 'pointer'
-  },
-  checkbox: {
-    marginRight: '8px'
-  },
   button: {
     width: '100%',
     background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
@@ -300,46 +324,56 @@ const styles = {
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 0.2s',
+    marginTop: '8px'
   },
   buttonDisabled: {
     opacity: '0.6',
     cursor: 'not-allowed'
   },
+  links: {
+    textAlign: 'center',
+    marginBottom: '24px'
+  },
+  link: {
+    color: '#1E3A8A',
+    textDecoration: 'none',
+    fontWeight: '500',
+    fontSize: '14px'
+  },
+  separator: {
+    margin: '0 12px',
+    color: '#6B7280'
+  },
   aboutSection: {
     background: '#F8FAFC',
-    padding: '24px',
+    padding: '20px',
     borderRadius: '8px',
     marginBottom: '24px',
     border: '1px solid #E5E7EB'
   },
   aboutTitle: {
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: '600',
     color: '#1F2937',
-    margin: '0 0 16px 0',
+    margin: '0 0 12px 0',
     textAlign: 'center'
   },
   aboutText: {
-    fontSize: '14px',
+    fontSize: '13px',
     color: '#4B5563',
-    lineHeight: '1.6',
-    margin: '0 0 12px 0'
+    lineHeight: '1.5',
+    margin: '0 0 10px 0'
   },
   footer: {
     textAlign: 'center',
     borderTop: '1px solid #E5E7EB',
-    paddingTop: '24px'
+    paddingTop: '20px'
   },
   footerText: {
-    fontSize: '14px',
+    fontSize: '13px',
     color: '#6B7280',
-    margin: '0 0 8px 0',
-    lineHeight: '1.5'
-  },
-  link: {
-    color: '#1E3A8A',
-    textDecoration: 'none',
-    fontWeight: '500'
+    margin: '0 0 6px 0',
+    lineHeight: '1.4'
   }
 };
