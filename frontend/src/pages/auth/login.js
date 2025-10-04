@@ -13,17 +13,18 @@ export default function AdminLogin() {
     setIsLoading(true);
     
     try {
-      // TODO: Connect to real backend API
+      // TODO: Connect to real backend
       console.log('Logging in:', { email, password });
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For now, just redirect to admin dashboard
+      // Redirect to admin dashboard (we'll create this next)
       router.push('/admin/dashboard');
       
     } catch (error) {
       console.error('Login failed:', error);
+      alert('Login failed - please try again');
     } finally {
       setIsLoading(false);
     }
@@ -46,43 +47,103 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        maxWidth: '400px',
+        width: '100%',
+        background: 'white',
+        borderRadius: '12px',
+        padding: '40px',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+      }}>
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl">🎓</span>
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <div style={{
+            width: '60px',
+            height: '60px',
+            background: '#1E3A8A',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 15px'
+          }}>
+            <span style={{ color: 'white', fontSize: '24px' }}>🎓</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">TrendWave Connect</h1>
-          <p className="text-gray-600 mt-2">School Administration Portal</p>
+          <h1 style={{ 
+            fontSize: '28px', 
+            fontWeight: 'bold', 
+            color: '#1F2937',
+            margin: '0 0 5px 0'
+          }}>
+            TrendWave Connect
+          </h1>
+          <p style={{ 
+            color: '#6B7280', 
+            margin: 0,
+            fontSize: '14px'
+          }}>
+            School Administration Portal
+          </p>
         </div>
 
         {!showReset ? (
           /* LOGIN FORM */
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+          <form onSubmit={handleLogin} style={{ spaceY: '24px' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 School Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '1px solid #D1D5DB',
+                  borderRadius: '8px',
+                  fontSize: '16px'
+                }}
                 placeholder="your-school@example.com"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '1px solid #D1D5DB',
+                  borderRadius: '8px',
+                  fontSize: '16px'
+                }}
                 placeholder="Enter your password"
                 required
               />
@@ -91,16 +152,34 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              style={{
+                width: '100%',
+                background: '#1E3A8A',
+                color: 'white',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                opacity: isLoading ? 0.6 : 1
+              }}
             >
               {isLoading ? 'Signing In...' : 'Sign In to Admin Portal'}
             </button>
 
-            <div className="text-center">
+            <div style={{ textAlign: 'center', marginTop: '16px' }}>
               <button
                 type="button"
                 onClick={() => setShowReset(true)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                style={{
+                  color: '#1E3A8A',
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
               >
                 Forgot your password?
               </button>
@@ -108,16 +187,28 @@ export default function AdminLogin() {
           </form>
         ) : (
           /* RESET PASSWORD FORM */
-          <form onSubmit={handleResetPassword} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+          <form onSubmit={handleResetPassword} style={{ spaceY: '24px' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Enter your school email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '1px solid #D1D5DB',
+                  borderRadius: '8px',
+                  fontSize: '16px'
+                }}
                 placeholder="your-school@example.com"
                 required
               />
@@ -126,16 +217,34 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              style={{
+                width: '100%',
+                background: '#1E3A8A',
+                color: 'white',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                opacity: isLoading ? 0.6 : 1
+              }}
             >
               {isLoading ? 'Sending...' : 'Send Reset Link'}
             </button>
 
-            <div className="text-center">
+            <div style={{ textAlign: 'center', marginTop: '16px' }}>
               <button
                 type="button"
                 onClick={() => setShowReset(false)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                style={{
+                  color: '#1E3A8A',
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
               >
                 Back to login
               </button>
@@ -144,8 +253,19 @@ export default function AdminLogin() {
         )}
 
         {/* Demo Info */}
-        <div className="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-          <p className="text-sm text-yellow-800 text-center">
+        <div style={{
+          marginTop: '24px',
+          padding: '16px',
+          background: '#FEF3C7',
+          borderRadius: '8px',
+          border: '1px solid #F59E0B'
+        }}>
+          <p style={{
+            fontSize: '12px',
+            color: '#92400E',
+            textAlign: 'center',
+            margin: 0
+          }}>
             <strong>Demo Mode:</strong> Currently using simulated login. 
             Will connect to real backend in next steps.
           </p>
