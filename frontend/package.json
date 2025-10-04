@@ -1,6 +1,7 @@
 {
   "name": "trendwave-frontend",
   "version": "1.0.0",
+  "description": "TrendWave Connect - School Management Platform",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,5 +16,8 @@
   "devDependencies": {
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
