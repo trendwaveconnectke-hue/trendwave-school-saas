@@ -1,172 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 
-export default function WorkingLogin() {
-  const [formData, setFormData] = useState({
-    schoolId: '',
-    email: '',
-    password: ''
-  });
-  const [captcha, setCaptcha] = useState({ question: '', answer: 0 });
-  const [userAnswer, setUserAnswer] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    generateCaptcha();
-  }, []);
-
-  const generateCaptcha = () => {
-    const num1 = Math.floor(Math.random() * 8) + 1;
-    const num2 = Math.floor(Math.random() * 8) + 1;
-    const answer = num1 + num2;
-    
-    setCaptcha({ question: `${num1} + ${num2}`, answer });
-    setUserAnswer('');
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrors({});
-
-    // Validate captcha
-    if (parseInt(userAnswer) !== captcha.answer) {
-      setErrors({ captcha: 'Wrong security answer' });
-      generateCaptcha();
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      // REAL API CALL to your backend
-      const response = await fetch('https://trendwave-backend-zord.onrender.com/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          school_id: formData.schoolId,
-          email: formData.email,
-          password: formData.password
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Store authentication data
-        localStorage.setItem('admin_token', data.data.token);
-        localStorage.setItem('school_id', data.data.school.id);
-        localStorage.setItem('school_name', data.data.school.name);
-        
-        // Redirect to dashboard
-        window.location.href = '/admin/dashboard';
-      } else {
-        setErrors({ submit: data.message || 'Login failed' });
-        generateCaptcha();
-      }
-      
-    } catch (error) {
-      setErrors({ submit: 'Network error. Please check your connection.' });
-      generateCaptcha();
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+export default function Register() {
+  const router = useRouter();
+  
   return (
     <div style={styles.container}>
-      <div style={styles.loginCard}>
-        {/* Header */}
+      <div style={styles.card}>
         <div style={styles.header}>
           <div style={styles.logo}>🎓</div>
-          <div>
-            <h1 style={styles.title}>TrendWave Connect</h1>
-            <p style={styles.subtitle}>Secure Admin Portal</p>
-          </div>
+          <h1 style={styles.title}>School Registration</h1>
+          <p style={styles.subtitle}>Create your school account in minutes</p>
         </div>
-
-        {/* Login Form */}
-        <form onSubmit={handleLogin} style={styles.form}>
-          <input
-            type="text"
-            placeholder="School ID (TWC0001)"
-            value={formData.schoolId}
-            onChange={(e) => setFormData({...formData, schoolId: e.target.value})}
-            style={styles.input}
-            required
-          />
-
-          <input
-            type="email"
-            placeholder="Admin Email"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-            style={styles.input}
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})}
-            style={styles.input}
-            required
-          />
-
-          {/* Security Check */}
-          <div style={styles.captchaBox}>
-            <div style={styles.captchaHeader}>
-              <span>Security: {captcha.question} = ?</span>
-              <button 
-                type="button" 
-                onClick={generateCaptcha}
-                style={styles.refreshBtn}
-              >
-                🔄
-              </button>
+        
+        <div style={styles.content}>
+          <div style={styles.featureList}>
+            <div style={styles.featureItem}>
+              <span style={styles.featureIcon}>🚀</span>
+              <div>
+                <h3>1 Month Free Trial</h3>
+                <p>Full access to all features with no commitment</p>
+              </div>
             </div>
-            <input
-              type="number"
-              placeholder="Your answer"
-              value={userAnswer}
-              onChange={(e) => setUserAnswer(e.target.value)}
-              style={styles.captchaInput}
-              required
-            />
-            {errors.captcha && <span style={styles.error}>⚠️ {errors.captcha}</span>}
+            
+            <div style={styles.featureItem}>
+              <span style={styles.featureIcon}>👥</span>
+              <div>
+                <h3>Student Management</h3>
+                <p>Complete student records and parent communication</p>
+              </div>
+            </div>
+            
+            <div style={styles.featureItem}>
+              <span style={styles.featureIcon}>💰</span>
+              <div>
+                <h3>Fee Collection</h3>
+                <p>Mobile money integration and payment tracking</p>
+              </div>
+            </div>
           </div>
-
-          {/* Submit Button */}
+          
           <button 
-            type="submit" 
-            disabled={isLoading}
-            style={{
-              ...styles.loginBtn,
-              ...(isLoading && styles.loadingBtn)
-            }}
+            style={styles.primaryButton}
+            onClick={() => router.push('/auth/register-new')}
           >
-            {isLoading ? '🔐 Verifying...' : '🚀 Sign In'}
+            🎯 Start School Registration
           </button>
-
-          {errors.submit && <span style={styles.error}>❌ {errors.submit}</span>}
-        </form>
-
-        {/* Demo Info */}
-        <div style={styles.note}>
-          <p style={styles.noteText}>
-            <strong>Demo:</strong> Use TWC0001 / trendwaveconnectke@gmail.com / @Dan0718#
-          </p>
-        </div>
-
-        {/* Support */}
-        <div style={styles.support}>
-          <span style={styles.supportText}>Need help?</span>
-          <a href="mailto:support@trendwaveconnect.com" style={styles.supportLink}>
-            Contact Support
-          </a>
+          
+          <button 
+            style={styles.secondaryButton}
+            onClick={() => router.push('/auth/login')}
+          >
+            Already have an account? Sign In
+          </button>
         </div>
       </div>
     </div>
@@ -180,134 +66,101 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '15px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
+    padding: '20px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
-  loginCard: {
+  card: {
     background: 'white',
-    padding: '25px',
-    borderRadius: '12px',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+    padding: '40px',
+    borderRadius: '20px',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
     width: '100%',
-    maxWidth: '350px'
+    maxWidth: '500px',
+    textAlign: 'center'
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '20px',
-    textAlign: 'left'
+    marginBottom: '30px'
   },
   logo: {
-    fontSize: '28px',
-    background: '#1E3A8A',
-    color: 'white',
-    width: '45px',
-    height: '45px',
-    borderRadius: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    fontSize: '48px',
+    marginBottom: '15px'
   },
   title: {
-    fontSize: '18px',
-    fontWeight: '700',
+    fontSize: '28px',
+    fontWeight: '800',
     color: '#1E3A8A',
-    margin: '0 0 2px 0'
+    margin: '0 0 10px 0'
   },
   subtitle: {
-    fontSize: '12px',
+    fontSize: '16px',
     color: '#6B7280',
     margin: 0
   },
-  form: {
+  content: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
-    marginBottom: '15px'
+    gap: '25px'
   },
-  input: {
-    padding: '10px 12px',
-    border: '1.5px solid #E5E7EB',
-    borderRadius: '8px',
-    fontSize: '14px',
-    width: '100%',
-    boxSizing: 'border-box'
+  featureList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px'
   },
-  captchaBox: {
+  featureItem: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '15px',
+    textAlign: 'left',
+    padding: '20px',
     background: '#F8FAFC',
-    padding: '12px',
-    borderRadius: '8px',
+    borderRadius: '12px',
     border: '1px solid #E5E7EB'
   },
-  captchaHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '8px',
-    fontSize: '13px',
+  featureIcon: {
+    fontSize: '24px',
+    marginTop: '2px'
+  },
+  featureItem h3: {
+    margin: '0 0 5px 0',
+    fontSize: '16px',
     fontWeight: '600',
-    color: '#374151'
+    color: '#1F2937'
   },
-  refreshBtn: {
-    background: 'none',
-    border: 'none',
-    fontSize: '12px',
-    cursor: 'pointer',
-    padding: '4px'
-  },
-  captchaInput: {
-    padding: '8px 10px',
-    border: '1.5px solid #E5E7EB',
-    borderRadius: '6px',
+  featureItem p: {
+    margin: 0,
     fontSize: '14px',
-    width: '100%',
-    boxSizing: 'border-box'
+    color: '#6B7280',
+    lineHeight: '1.5'
   },
-  loginBtn: {
+  primaryButton: {
     background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
     color: 'white',
     border: 'none',
-    padding: '10px',
-    borderRadius: '8px',
+    padding: '18px 30px',
+    borderRadius: '12px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 8px 25px rgba(30, 58, 138, 0.3)',
+    ':hover': {
+      transform: 'translateY(-3px)',
+      boxShadow: '0 12px 30px rgba(30, 58, 138, 0.4)'
+    }
+  },
+  secondaryButton: {
+    background: 'none',
+    color: '#6B7280',
+    border: '2px solid #E5E7EB',
+    padding: '15px 30px',
+    borderRadius: '12px',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
-    marginTop: '5px'
-  },
-  loadingBtn: {
-    opacity: 0.7,
-    cursor: 'not-allowed'
-  },
-  error: {
-    color: '#EF4444',
-    fontSize: '11px',
-    textAlign: 'center',
-    display: 'block'
-  },
-  note: {
-    background: '#F0F9FF',
-    padding: '10px',
-    borderRadius: '6px',
-    marginBottom: '15px',
-    border: '1px solid #E0F2FE'
-  },
-  noteText: {
-    fontSize: '11px',
-    color: '#0369A1',
-    margin: 0,
-    textAlign: 'center'
-  },
-  support: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    fontSize: '11px',
-    color: '#6B7280'
-  },
-  supportLink: {
-    color: '#1E3A8A',
-    textDecoration: 'none',
-    fontSize: '11px'
+    transition: 'all 0.3s ease',
+    ':hover': {
+      borderColor: '#1E3A8A',
+      color: '#1E3A8A'
+    }
   }
 };
