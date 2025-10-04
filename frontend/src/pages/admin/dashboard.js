@@ -723,732 +723,212 @@ export default function AdminDashboard() {
   );
 }
 
-// ========== COMPLETE STYLES OBJECT ==========
-const styles = {
-  container: {
-    minHeight: '100vh',
-    background: '#f8fafc',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-  },
-  loadingContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    background: '#f8fafc'
-  },
-  spinner: {
-    border: '4px solid #f3f3f3',
-    borderTop: '4px solid #1E3A8A',
-    borderRadius: '50%',
-    width: '50px',
-    height: '50px',
-    animation: 'spin 1s linear infinite',
-    marginBottom: '20px'
-  },
-  loadingText: {
-    color: '#6B7280',
-    fontSize: '16px'
-  },
-  header: {
-    background: 'white',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-    borderBottom: '1px solid #e5e7eb',
-    position: 'sticky',
-    top: 0,
-    zIndex: 100
-  },
-  headerContent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '1rem 2rem',
-    maxWidth: '100%'
-  },
-  headerLeft: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    flex: 1
-  },
-  logo: {
-    width: '50px',
-    height: '50px',
-    background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
-    borderRadius: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '24px',
-    color: 'white'
-  },
-  schoolName: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#1F2937',
-    margin: 0
-  },
-  schoolId: {
-    fontSize: '14px',
-    color: '#6B7280',
-    margin: 0
-  },
-  headerCenter: {
-    flex: 2,
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  searchContainer: {
-    position: 'relative',
-    width: '100%',
-    maxWidth: '500px'
-  },
-  searchInput: {
-    width: '100%',
-    padding: '10px 40px 10px 16px',
-    border: '2px solid #e5e7eb',
-    borderRadius: '25px',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.2s'
-  },
-  searchIcon: {
-    position: 'absolute',
-    right: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: '#6B7280'
-  },
-  headerRight: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    flex: 1,
-    justifyContent: 'flex-end'
-  },
-  headerActions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem'
-  },
-  notificationBtn: {
-    background: 'none',
-    border: 'none',
-    fontSize: '20px',
-    cursor: 'pointer',
-    padding: '8px',
-    position: 'relative'
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: '-5px',
-    right: '-5px',
-    background: '#ef4444',
-    color: 'white',
-    borderRadius: '50%',
-    width: '18px',
-    height: '18px',
-    fontSize: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  profileDropdown: {
-    position: 'relative',
-    display: 'inline-block'
-  },
-  profileBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-    background: 'none',
-    border: '1px solid #e5e7eb',
-    padding: '8px 12px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'all 0.2s'
-  },
-  profileAvatar: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    background: '#1E3A8A',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: '600',
-    fontSize: '14px'
-  },
-  profileInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: '2px'
-  },
-  profileName: {
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  profileRole: {
-    fontSize: '12px',
-    color: '#6B7280'
-  },
-  dropdownArrow: {
-    fontSize: '12px',
-    color: '#6B7280',
-    transition: 'transform 0.2s'
-  },
-  dropdownMenu: {
-    position: 'absolute',
-    top: '100%',
-    right: 0,
-    marginTop: '8px',
-    background: 'white',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-    minWidth: '200px',
-    display: 'none'
-  },
-  dropdownItem: {
-    width: '100%',
-    background: 'none',
-    border: 'none',
-    padding: '12px 16px',
-    textAlign: 'left',
-    cursor: 'pointer',
-    fontSize: '14px',
-    color: '#374151',
-    transition: 'background 0.2s',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px'
-  },
-  dropdownItemLogout: {
-    width: '100%',
-    background: 'none',
-    border: 'none',
-    padding: '12px 16px',
-    textAlign: 'left',
-    cursor: 'pointer',
-    fontSize: '14px',
-    color: '#dc2626',
-    transition: 'background 0.2s',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px'
-  },
-  dropdownDivider: {
-    height: '1px',
-    background: '#e5e7eb',
-    margin: '4px 0'
-  },
-  mainLayout: {
-    display: 'flex',
-    minHeight: 'calc(100vh - 80px)'
-  },
-  sidebar: {
-    width: '250px',
-    background: 'white',
-    borderRight: '1px solid #e5e7eb',
-    padding: '1rem 0',
-    overflowY: 'auto'
-  },
-  sidebarButton: {
-    width: '100%',
-    background: 'none',
-    border: 'none',
-    padding: '12px 20px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    transition: 'all 0.2s',
-    color: '#6B7280'
-  },
-  sidebarButtonActive: {
-    background: '#1E3A8A',
-    color: 'white',
-    borderRight: '3px solid #10B981'
-  },
-  sidebarIcon: {
-    fontSize: '18px',
-    width: '24px',
-    textAlign: 'center'
-  },
-  sidebarLabel: {
-    fontSize: '14px',
-    fontWeight: '500'
-  },
-  mainContent: {
-    flex: 1,
-    padding: '2rem',
-    overflowY: 'auto',
-    background: '#f8fafc'
-  },
-  dashboard: {
-    spaceY: '2rem'
-  },
-  statsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem'
-  },
-  statCard: {
-    background: 'white',
-    padding: '1.5rem',
-    borderRadius: '12px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    border: '1px solid #e5e7eb',
-    transition: 'transform 0.2s'
-  },
-  statIcon: {
-    fontSize: '2rem',
-    background: '#1E3A8A',
-    color: 'white',
-    width: '60px',
-    height: '60px',
-    borderRadius: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  statInfo: {
-    flex: 1
-  },
-  statNumber: {
-    fontSize: '1.5rem',
-    fontWeight: '700',
-    color: '#1F2937',
-    margin: '0 0 0.25rem 0'
-  },
-  statLabel: {
-    fontSize: '0.875rem',
-    color: '#6B7280',
-    margin: 0
-  },
-  section: {
-    background: 'white',
-    padding: '1.5rem',
-    borderRadius: '12px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    border: '1px solid #e5e7eb',
-    marginBottom: '1.5rem'
-  },
-  sectionTitle: {
-    fontSize: '1.25rem',
-    fontWeight: '600',
-    color: '#1F2937',
-    margin: '0 0 1rem 0'
-  },
-  actionsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-    gap: '1rem'
-  },
-  actionButton: {
-    background: 'white',
-    border: '2px solid #e5e7eb',
-    borderRadius: '12px',
-    padding: '1rem',
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '0.5rem',
-    position: 'relative'
-  },
-  actionButtonDisabled: {
-    opacity: 0.6,
-    cursor: 'not-allowed',
-    background: '#f9fafb'
-  },
-  actionIcon: {
-    fontSize: '1.5rem'
-  },
-  actionLabel: {
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    color: '#374151'
-  },
-  lockIcon: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    fontSize: '12px'
-  },
-  activityCard: {
-    spaceY: '1rem'
-  },
-  activityItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    padding: '0.75rem',
-    borderRadius: '8px',
-    background: '#f9fafb',
-    border: '1px solid #e5e7eb'
-  },
-  activityIcon: {
-    fontSize: '1.25rem',
-    background: '#1E3A8A',
-    color: 'white',
-    width: '40px',
-    height: '40px',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  activityContent: {
-    flex: 1
-  },
-  activityText: {
-    margin: '0 0 0.25rem 0',
-    color: '#374151',
-    fontSize: '14px'
-  },
-  activityTime: {
-    fontSize: '12px',
-    color: '#6B7280'
-  },
-  tabContent: {
-    background: 'white',
-    borderRadius: '12px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    border: '1px solid #e5e7eb',
-    minHeight: '500px'
-  },
-  tabHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1.5rem 2rem',
-    borderBottom: '1px solid #e5e7eb'
-  },
-  tabTitle: {
-    fontSize: '1.5rem',
-    fontWeight: '600',
-    color: '#1F2937',
-    margin: 0
-  },
-  tabSubtitle: {
-    color: '#6B7280',
-    fontSize: '14px',
-    margin: '4px 0 0 0'
-  },
-  tabActions: {
-    display: 'flex',
-    gap: '1rem'
-  },
-  primaryButton: {
-    background: '#1E3A8A',
-    color: 'white',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: '500',
-    fontSize: '14px'
-  },
-  secondaryButton: {
-    background: 'white',
-    color: '#374151',
-    border: '2px solid #e5e7eb',
-    padding: '10px 20px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: '500',
-    fontSize: '14px'
-  },
-  featureSection: {
-    padding: '3rem 2rem'
-  },
-  featureHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    marginBottom: '2rem',
-    textAlign: 'center',
-    justifyContent: 'center'
-  },
-  featureIcon: {
-    fontSize: '3rem'
-  },
-  featureTitle: {
-    fontSize: '1.75rem',
-    fontWeight: '700',
-    color: '#1F2937',
-    margin: '0 0 0.5rem 0'
-  },
-  featureSubtitle: {
-    fontSize: '1rem',
-    color: '#6B7280',
-    margin: 0
-  },
-  featureGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem'
-  },
-  featureCard: {
-    background: '#f8fafc',
-    padding: '2rem',
-    borderRadius: '12px',
-    border: '1px solid #e5e7eb',
-    textAlign: 'center',
-    transition: 'transform 0.2s'
-  },
-  featureCardIcon: {
-    fontSize: '2.5rem',
-    marginBottom: '1rem'
-  },
-  featureCardTitle: {
-    fontSize: '1.125rem',
-    fontWeight: '600',
-    color: '#1F2937',
-    margin: '0 0 0.5rem 0'
-  },
-  featureCardText: {
-    fontSize: '0.875rem',
-    color: '#6B7280',
-    margin: 0,
-    lineHeight: '1.5'
-  },
-  upgradeSection: {
-    background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
-    padding: '2rem',
-    borderRadius: '12px',
-    textAlign: 'center',
-    marginTop: '2rem'
-  },
-  upgradeContent: {
-    color: 'white'
-  },
-  upgradeTitle: {
-    fontSize: '1.25rem',
-    fontWeight: '600',
-    margin: '0 0 0.5rem 0'
-  },
-  upgradeText: {
-    fontSize: '0.875rem',
-    opacity: 0.9,
-    margin: '0 0 1.5rem 0'
-  },
-  upgradeButton: {
-    background: 'white',
-    color: '#1E3A8A',
-    border: 'none',
-    padding: '12px 24px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: '600',
-    fontSize: '14px',
-    transition: 'transform 0.2s'
-  },
-  // ========== STUDENTS TAB SPECIFIC STYLES ==========
-  filtersSection: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1.5rem 2rem',
-    borderBottom: '1px solid #e5e7eb',
-    background: '#f9fafb'
-  },
-  filterGroup: {
-    display: 'flex',
-    gap: '1rem'
-  },
-  filterSelect: {
-    padding: '8px 12px',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    background: 'white',
-    fontSize: '14px'
-  },
-  searchBox: {
-    position: 'relative',
-    width: '300px'
-  },
-  miniStats: {
-    display: 'flex',
-    gap: '1rem',
-    padding: '1rem 2rem',
-    background: 'white',
-    borderBottom: '1px solid #e5e7eb'
-  },
-  miniStat: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '0.5rem 1rem',
-    background: '#f8fafc',
-    borderRadius: '8px',
-    border: '1px solid #e5e7eb'
-  },
-  miniStatNumber: {
-    fontSize: '1.25rem',
-    fontWeight: '700',
-    color: '#1E3A8A'
-  },
-  miniStatLabel: {
-    fontSize: '12px',
-    color: '#6B7280',
-    marginTop: '4px'
-  },
-  tableContainer: {
-    overflowX: 'auto'
-  },
-  dataTable: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    background: 'white'
-  },
-  tableHeader: {
-    padding: '1rem',
-    textAlign: 'left',
-    borderBottom: '2px solid #e5e7eb',
-    background: '#f9fafb',
-    fontWeight: '600',
-    color: '#374151',
-    fontSize: '14px'
-  },
-  tableRow: {
-    borderBottom: '1px solid #e5e7eb',
-    transition: 'background 0.2s'
-  },
-  tableCell: {
-    padding: '1rem',
-    fontSize: '14px'
-  },
-  checkbox: {
-    width: '16px',
-    height: '16px'
-  },
-  studentInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px'
-  },
-  avatar: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    background: '#1E3A8A',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: '600',
-    fontSize: '14px'
-  },
-  studentName: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  studentId: {
-    fontSize: '12px',
-    color: '#6B7280',
-    marginTop: '2px'
-  },
-  classBadge: {
-    background: '#dbeafe',
-    color: '#1E40AF',
-    padding: '4px 8px',
-    borderRadius: '12px',
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  parentInfo: {
-    fontSize: '14px'
-  },
-  parentName: {
-    fontWeight: '500',
-    color: '#374151'
-  },
-  relationship: {
-    fontSize: '12px',
-    color: '#6B7280',
-    marginTop: '2px'
-  },
-  contactInfo: {
-    fontSize: '13px',
-    color: '#6B7280'
-  },
-  statusActive: {
-    background: '#d1fae5',
-    color: '#065f46',
-    padding: '4px 8px',
-    borderRadius: '12px',
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  statusWarning: {
-    background: '#fef3c7',
-    color: '#92400e',
-    padding: '4px 8px',
-    borderRadius: '12px',
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  actionButtons: {
-    display: 'flex',
-    gap: '8px'
-  },
-  iconButton: {
-    background: 'none',
-    border: '1px solid #e5e7eb',
-    padding: '6px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    transition: 'all 0.2s'
-  },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1.5rem 2rem',
-    borderTop: '1px solid #e5e7eb',
-    background: 'white'
-  },
-  paginationButton: {
-    background: 'white',
-    border: '1px solid #d1d5db',
-    padding: '8px 16px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px'
-  },
-  paginationPages: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center'
-  },
-  paginationPage: {
-    background: 'white',
-    border: '1px solid #d1d5db',
-    padding: '8px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px'
-  },
-  paginationPageActive: {
-    background: '#1E3A8A',
-    color: 'white',
-    border: '1px solid #1E3A8A',
-    padding: '8px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px'
+// REPLACE the primaryButton style:
+primaryButton: {
+  background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
+  color: 'white',
+  border: 'none',
+  padding: '12px 24px',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease',
+  boxShadow: '0 4px 6px rgba(30, 58, 138, 0.2)',
+  position: 'relative',
+  overflow: 'hidden',
+  ':hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 6px 12px rgba(30, 58, 138, 0.3)'
+  },
+  ':active': {
+    transform: 'translateY(0)',
+    boxShadow: '0 2px 4px rgba(30, 58, 138, 0.2)'
   }
-};
+},
+
+// REPLACE the secondaryButton style:
+secondaryButton: {
+  background: 'white',
+  color: '#374151',
+  border: '2px solid #e5e7eb',
+  padding: '10px 20px',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '500',
+  fontSize: '14px',
+  transition: 'all 0.3s ease',
+  position: 'relative',
+  overflow: 'hidden',
+  ':hover': {
+    borderColor: '#1E3A8A',
+    color: '#1E3A8A',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+  }
+},
+
+// REPLACE the actionButton style:
+actionButton: {
+  background: 'white',
+  border: '2px solid #e5e7eb',
+  borderRadius: '12px',
+  padding: '1.5rem 1rem',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '0.75rem',
+  position: 'relative',
+  overflow: 'hidden',
+  animation: 'fadeInUp 0.6s ease-out',
+  ':hover': {
+    transform: 'translateY(-5px)',
+    borderColor: '#1E3A8A',
+    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+    '& $actionIcon': {
+      transform: 'scale(1.2)',
+      animation: 'bounce 0.6s ease'
+    }
+  }
+},
+
+// REPLACE the iconButton style:
+iconButton: {
+  background: 'white',
+  border: '1px solid #e5e7eb',
+  padding: '8px',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  fontSize: '14px',
+  transition: 'all 0.2s ease',
+  ':hover': {
+    background: '#1E3A8A',
+    color: 'white',
+    transform: 'scale(1.1)',
+    boxShadow: '0 4px 8px rgba(30, 58, 138, 0.3)'
+  },
+  ':active': {
+    transform: 'scale(0.95)'
+  }
+},
+
+// REPLACE the sidebarButton style:
+sidebarButton: {
+  width: '100%',
+  background: 'none',
+  border: 'none',
+  padding: '12px 20px',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  transition: 'all 0.3s ease',
+  color: '#6B7280',
+  position: 'relative',
+  overflow: 'hidden',
+  ':hover': {
+    background: '#f8fafc',
+    color: '#1E3A8A',
+    paddingLeft: '24px',
+    '& $sidebarIcon': {
+      transform: 'scale(1.1)'
+    }
+  }
+},
+
+// REPLACE the profileBtn style:
+profileBtn: {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+  background: 'none',
+  border: '1px solid #e5e7eb',
+  padding: '8px 12px',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  ':hover': {
+    borderColor: '#1E3A8A',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    transform: 'translateY(-1px)'
+  }
+},
+
+// REPLACE the statCard style:
+statCard: {
+  background: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+  border: '1px solid #e5e7eb',
+  transition: 'all 0.3s ease',
+  animation: 'fadeInUp 0.6s ease-out',
+  ':hover': {
+    transform: 'translateY(-5px)',
+    boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+    '& $statIcon': {
+      transform: 'scale(1.1)',
+      animation: 'pulse 1s ease-in-out'
+    }
+  }
+},
+
+// REPLACE the featureCard style:
+featureCard: {
+  background: '#f8fafc',
+  padding: '2rem',
+  borderRadius: '12px',
+  border: '1px solid #e5e7eb',
+  textAlign: 'center',
+  transition: 'all 0.3s ease',
+  animation: 'fadeInUp 0.8s ease-out',
+  ':hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.1)',
+    background: 'white',
+    '& $featureCardIcon': {
+      transform: 'scale(1.2)',
+      animation: 'bounce 0.8s ease'
+    }
+  }
+},
+
+// ADD new actionIcon style for the hover effect:
+actionIcon: {
+  fontSize: '2rem',
+  transition: 'transform 0.3s ease'
+},
+
+// ADD new sidebarIcon style for the hover effect:
+sidebarIcon: {
+  fontSize: '18px',
+  width: '24px',
+  textAlign: 'center',
+  transition: 'transform 0.3s ease'
+},
+
+// ADD new statIcon style for the hover effect:
+statIcon: {
+  fontSize: '2rem',
+  background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
+  color: 'white',
+  width: '60px',
+  height: '60px',
+  borderRadius: '12px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'transform 0.3s ease'
+},
+
+// ADD new featureCardIcon style for the hover effect:
+featureCardIcon: {
+  fontSize: '2.5rem',
+  marginBottom: '1rem',
+  transition: 'transform 0.3s ease'
+},
