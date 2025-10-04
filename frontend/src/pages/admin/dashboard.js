@@ -445,7 +445,6 @@ const setRealisticData = () => {
         <div style={styles.parentName}>Grace Kamau</div>
         <div style={styles.relationship}>Mother</div>
       </div>
-    </td>
     <td style={styles.tableCell}>
       <div style={styles.contactInfo}>
         <div>📞 +254 711 234 567</div>
