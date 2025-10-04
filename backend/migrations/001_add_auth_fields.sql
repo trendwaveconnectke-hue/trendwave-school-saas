@@ -1,0 +1,9 @@
+-- Add authentication fields to schools table
+ALTER TABLE schools 
+ADD COLUMN IF NOT EXISTS school_id VARCHAR(20) UNIQUE,
+ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255),
+ADD COLUMN IF NOT EXISTS reset_token VARCHAR(255),
+ADD COLUMN IF NOT EXISTS reset_token_expiry TIMESTAMP,
+ADD COLUMN IF NOT EXISTS failed_login_attempts INTEGER DEFAULT 0,
+ADD COLUMN IF NOT EXISTS account_locked_until TIMESTAMP,
+ADD COLUMN IF NOT EXISTS last_login TIMESTAMP;
