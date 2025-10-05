@@ -21,7 +21,6 @@ export default function ModernHome() {
     window.open('https://trendwaveconnect.com', '_blank');
   };
 
-  // Worldwide features for all organization types
   const features = [
     { 
       icon: '👥', 
@@ -55,7 +54,6 @@ export default function ModernHome() {
     }
   ];
 
-  // Organization types we serve
   const organizationTypes = [
     { icon: '🎓', name: 'Educational Institutions', count: '500+' },
     { icon: '🏢', name: 'Business Corporations', count: '200+' },
@@ -67,33 +65,39 @@ export default function ModernHome() {
 
   return (
     <div style={styles.container}>
-      {/* Animated Background */}
       <div style={styles.background}></div>
       
-      {/* Main Content */}
       <div style={{
         ...styles.content,
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(30px)'
       }}>
         
-        {/* Header */}
         <header style={styles.header}>
           <div style={styles.logo}>
             <span style={styles.logoIcon}>🌐</span>
             <span style={styles.logoText}>TrendWave Connect</span>
           </div>
           <div style={styles.headerButtons}>
-            <button onClick={navigateToWebsite} style={styles.secondaryButton}>
+            <button 
+              onClick={navigateToWebsite} 
+              style={styles.secondaryButton}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+              onMouseLeave={(e) => e.target.style.background = 'transparent'}
+            >
               Website
             </button>
-            <button onClick={navigateToLogin} style={styles.primaryButton}>
+            <button 
+              onClick={navigateToLogin} 
+              style={styles.primaryButton}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
+              onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+            >
               Admin Login
             </button>
           </div>
         </header>
 
-        {/* Hero Section */}
         <section style={styles.hero}>
           <div style={styles.heroContent}>
             <h1 style={styles.heroTitle}>
@@ -102,21 +106,34 @@ export default function ModernHome() {
             </h1>
             <p style={styles.heroSubtitle}>
               The world's most comprehensive management platform for schools, businesses, 
-              governments, and organizations of all types. Streamline operations, enhance 
-              engagement, and drive growth globally.
+              governments, and organizations of all types.
             </p>
             
-            {/* Action Buttons */}
             <div style={styles.heroButtons}>
-              <button onClick={navigateToRegister} style={styles.ctaButton}>
+              <button 
+                onClick={navigateToRegister} 
+                style={styles.ctaButton}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(245, 158, 11, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.4)';
+                }}
+              >
                 Start Free Trial
               </button>
-              <button onClick={navigateToLogin} style={styles.outlineButton}>
+              <button 
+                onClick={navigateToLogin} 
+                style={styles.outlineButton}
+                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+                onMouseLeave={(e) => e.target.style.background = 'transparent'}
+              >
                 Admin Portal
               </button>
             </div>
 
-            {/* Stats */}
             <div style={styles.stats}>
               <div style={styles.stat}>
                 <span style={styles.statNumber}>1,200+</span>
@@ -133,7 +150,6 @@ export default function ModernHome() {
             </div>
           </div>
           
-          {/* Animated Illustration */}
           <div style={styles.illustration}>
             <div style={styles.floatingElement}>🏢</div>
             <div style={{...styles.floatingElement, animationDelay: '1s'}}>🎓</div>
@@ -141,7 +157,6 @@ export default function ModernHome() {
           </div>
         </section>
 
-        {/* Organization Types */}
         <section style={styles.organizations}>
           <div style={styles.sectionHeader}>
             <h2 style={styles.sectionTitle}>Trusted Worldwide</h2>
@@ -156,6 +171,14 @@ export default function ModernHome() {
                 key={index}
                 style={styles.orgCard}
                 className="feature-card"
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-5px)';
+                  e.target.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                }}
               >
                 <div style={styles.orgIcon}>{org.icon}</div>
                 <h3 style={styles.orgName}>{org.name}</h3>
@@ -165,7 +188,6 @@ export default function ModernHome() {
           </div>
         </section>
 
-        {/* Features Grid */}
         <section style={styles.features}>
           <div style={styles.sectionHeader}>
             <h2 style={styles.sectionTitle}>Enterprise-Grade Features</h2>
@@ -180,6 +202,14 @@ export default function ModernHome() {
                 key={index}
                 style={styles.featureCard}
                 className="feature-card"
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-5px)';
+                  e.target.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                }}
               >
                 <div style={styles.featureIcon}>{feature.icon}</div>
                 <h3 style={styles.featureTitle}>{feature.title}</h3>
@@ -189,7 +219,6 @@ export default function ModernHome() {
           </div>
         </section>
 
-        {/* Global Presence */}
         <section style={styles.global}>
           <div style={styles.globalContent}>
             <div style={styles.globalText}>
@@ -218,31 +247,52 @@ export default function ModernHome() {
               </div>
             </div>
             <div style={styles.globalMap}>
-              {/* World map illustration placeholder */}
               <div style={styles.mapPlaceholder}>🌍</div>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
         <section style={styles.ctaSection}>
           <div style={styles.ctaCard}>
             <h2 style={styles.ctaTitle}>Ready to Transform Your Organization?</h2>
             <p style={styles.ctaText}>
-              Join thousands of organizations worldwide using TrendWave Connect to streamline operations and drive growth.
+              Join thousands of organizations worldwide using TrendWave Connect.
             </p>
             <div style={styles.ctaButtons}>
-              <button onClick={navigateToRegister} style={styles.ctaButton}>
+              <button 
+                onClick={navigateToRegister} 
+                style={styles.ctaButton}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(245, 158, 11, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.4)';
+                }}
+              >
                 Start Your Free Trial
               </button>
-              <button onClick={navigateToWebsite} style={styles.contactButton}>
+              <button 
+                onClick={navigateToWebsite} 
+                style={styles.contactButton}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#1e3a8a';
+                  e.target.style.color = 'white';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = '#1e3a8a';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
                 Contact Sales
               </button>
             </div>
           </div>
         </section>
 
-        {/* Footer */}
         <footer style={styles.footer}>
           <div style={styles.footerContent}>
             <div style={styles.footerBrand}>
@@ -251,7 +301,7 @@ export default function ModernHome() {
                 <span style={styles.logoText}>TrendWave Connect</span>
               </div>
               <p style={styles.footerText}>
-                Empowering organizations worldwide through innovative technology solutions
+                Empowering organizations worldwide through innovative technology
               </p>
             </div>
             
@@ -285,13 +335,13 @@ export default function ModernHome() {
           
           <div style={styles.footerBottom}>
             <p style={styles.copyright}>
-              © 2024 TrendWave Connect. All rights reserved. Serving organizations worldwide.
+              © 2024 TrendWave Connect. All rights reserved.
             </p>
           </div>
         </footer>
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-15px); }
@@ -312,12 +362,15 @@ export default function ModernHome() {
           animation: fadeInUp 0.6s ease-out forwards;
           opacity: 0;
         }
+
+        a:hover {
+          color: white !important;
+        }
       `}</style>
     </div>
   );
 }
 
-// Refined styles with smaller text and professional look
 const styles = {
   container: {
     minHeight: '100vh',
@@ -615,14 +668,14 @@ const styles = {
     background: '#f8fafc',
     borderRadius: '8px'
   },
-  globalStat strong: {
+  globalStatStrong: {
     display: 'block',
     fontSize: '1.25rem',
     fontWeight: '800',
     color: '#1e3a8a',
     marginBottom: '0.25rem'
   },
-  globalStat span: {
+  globalStatSpan: {
     fontSize: '0.8rem',
     color: '#6b7280'
   },
@@ -729,60 +782,3 @@ const styles = {
     margin: 0
   }
 };
-
-// Add hover effects
-Object.assign(styles.primaryButton, {
-  ':hover': {
-    background: 'rgba(255, 255, 255, 0.3)',
-    transform: 'translateY(-1px)'
-  }
-});
-
-Object.assign(styles.secondaryButton, {
-  ':hover': {
-    background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-1px)'
-  }
-});
-
-Object.assign(styles.ctaButton, {
-  ':hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(245, 158, 11, 0.6)'
-  }
-});
-
-Object.assign(styles.outlineButton, {
-  ':hover': {
-    background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-1px)'
-  }
-});
-
-Object.assign(styles.contactButton, {
-  ':hover': {
-    background: '#1e3a8a',
-    color: 'white',
-    transform: 'translateY(-1px)'
-  }
-});
-
-Object.assign(styles.orgCard, {
-  ':hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
-  }
-});
-
-Object.assign(styles.featureCard, {
-  ':hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
-  }
-});
-
-Object.assign(styles.footerLink, {
-  ':hover': {
-    color: 'white'
-  }
-});
