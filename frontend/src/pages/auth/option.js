@@ -13,7 +13,8 @@ export default function OrganizationOption() {
       title: 'Schools & Education',
       description: 'Universities, Colleges, Schools, Training Centers',
       color: '#4F46E5',
-      idPrefix: 'TWCS'
+      idPrefix: 'TWCS',
+      path: '/auth/register/education'
     },
     {
       id: 'business',
@@ -21,7 +22,8 @@ export default function OrganizationOption() {
       title: 'Companies & Business',
       description: 'Corporations, Startups, SMEs, Enterprises',
       color: '#059669',
-      idPrefix: 'TWCI'
+      idPrefix: 'TWCI',
+      path: '/auth/register/business'
     },
     {
       id: 'healthcare',
@@ -29,7 +31,8 @@ export default function OrganizationOption() {
       title: 'Healthcare & Medical', 
       description: 'Hospitals, Clinics, Medical Centers, Pharmacies',
       color: '#DC2626',
-      idPrefix: 'TWCH'
+      idPrefix: 'TWCH',
+      path: '/auth/register/healthcare'
     },
     {
       id: 'government',
@@ -37,7 +40,8 @@ export default function OrganizationOption() {
       title: 'Government & Public',
       description: 'Ministries, Agencies, Public Institutions',
       color: '#7C3AED',
-      idPrefix: 'TWCG'
+      idPrefix: 'TWCG',
+      path: '/auth/register/government'
     },
     {
       id: 'nonprofit',
@@ -45,7 +49,8 @@ export default function OrganizationOption() {
       title: 'Non-Profit & NGO',
       description: 'Charities, Foundations, Community Organizations',
       color: '#EA580C',
-      idPrefix: 'TWCN'
+      idPrefix: 'TWCN',
+      path: '/auth/register/nonprofit'
     },
     {
       id: 'religious',
@@ -53,7 +58,8 @@ export default function OrganizationOption() {
       title: 'Religious & Faith',
       description: 'Churches, Mosques, Temples, Religious Centers',
       color: '#0EA5E9',
-      idPrefix: 'TWCC'
+      idPrefix: 'TWCC',
+      path: '/auth/register/religious'
     },
     {
       id: 'industrial',
@@ -61,7 +67,8 @@ export default function OrganizationOption() {
       title: 'Industrial & Manufacturing',
       description: 'Factories, Production Plants, Industrial Complexes',
       color: '#475569',
-      idPrefix: 'TWCI'
+      idPrefix: 'TWCI',
+      path: '/auth/register/industrial'
     },
     {
       id: 'association',
@@ -69,7 +76,8 @@ export default function OrganizationOption() {
       title: 'Associations & Clubs',
       description: 'Professional Bodies, Unions, Societies, Clubs',
       color: '#DB2777',
-      idPrefix: 'TWCA'
+      idPrefix: 'TWCA',
+      path: '/auth/register/association'
     }
   ];
 
@@ -80,8 +88,8 @@ export default function OrganizationOption() {
     // Add a smooth loading delay for better UX
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Navigate to registration with the selected type
-    router.push(`/auth/register-new?type=${orgType.id}`);
+    // Navigate to the specific registration form
+    router.push(orgType.path);
   };
 
   return (
@@ -133,15 +141,15 @@ export default function OrganizationOption() {
               onClick={() => !isLoading && handleOrganizationSelect(orgType)}
               onMouseEnter={(e) => {
                 if (!isLoading) {
-                  e.target.style.transform = 'translateY(-8px) scale(1.02)';
-                  e.target.style.boxShadow = `0 20px 40px ${orgType.color}20`;
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = `0 20px 40px ${orgType.color}20`;
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isLoading) {
-                  e.target.style.transform = selectedOrg === orgType.id ? 
+                  e.currentTarget.style.transform = selectedOrg === orgType.id ? 
                     'scale(1.05)' : 'translateY(0) scale(1)';
-                  e.target.style.boxShadow = selectedOrg === orgType.id ?
+                  e.currentTarget.style.boxShadow = selectedOrg === orgType.id ?
                     `0 15px 35px ${orgType.color}30` : '0 4px 20px rgba(0,0,0,0.08)';
                 }
               }}
@@ -178,6 +186,11 @@ export default function OrganizationOption() {
                 }}
               >
                 ✓
+              </div>
+
+              {/* Hover Arrow */}
+              <div style={styles.hoverArrow}>
+                →
               </div>
             </div>
           ))}
@@ -227,7 +240,7 @@ export default function OrganizationOption() {
             box-shadow: 0 0 0 15px rgba(79, 70, 229, 0);
           }
           100% {
-            box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            boxShadow: 0 0 0 0 rgba(79, 70, 229, 0);
           }
         }
         
@@ -436,6 +449,16 @@ const styles = {
     transition: 'all 0.3s ease',
     boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
   },
+  hoverArrow: {
+    position: 'absolute',
+    bottom: '20px',
+    right: '20px',
+    fontSize: '18px',
+    color: '#9CA3AF',
+    transition: 'all 0.3s ease',
+    opacity: 0,
+    transform: 'translateX(-10px)'
+  },
   loadingOverlay: {
     position: 'absolute',
     top: 0,
@@ -478,7 +501,8 @@ const styles = {
   helpText: {
     color: '#667eea',
     fontWeight: '600',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    textDecoration: 'underline'
   },
   backButton: {
     background: 'none',
@@ -492,3 +516,26 @@ const styles = {
     transition: 'all 0.3s ease'
   }
 };
+
+// Add hover effects for org cards
+if (typeof window !== 'undefined') {
+  const cards = document.querySelectorAll('[style*="orgCard"]');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', (e) => {
+      const arrow = e.currentTarget.querySelector('[style*="hoverArrow"]');
+      if (arrow) {
+        arrow.style.opacity = '1';
+        arrow.style.transform = 'translateX(0)';
+        arrow.style.color = e.currentTarget.style.borderColor;
+      }
+    });
+    
+    card.addEventListener('mouseleave', (e) => {
+      const arrow = e.currentTarget.querySelector('[style*="hoverArrow"]');
+      if (arrow) {
+        arrow.style.opacity = '0';
+        arrow.style.transform = 'translateX(-10px)';
+      }
+    });
+  });
+}
