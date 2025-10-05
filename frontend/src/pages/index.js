@@ -13,17 +13,56 @@ export default function ModernHome() {
     router.push('/auth/login');
   };
 
+  const navigateToRegister = () => {
+    router.push('/auth/register');
+  };
+
   const navigateToWebsite = () => {
     window.open('https://trendwaveconnect.com', '_blank');
   };
 
+  // Worldwide features for all organization types
   const features = [
-    { icon: '🎓', title: 'Student Management', desc: 'Complete student records and progress tracking' },
-    { icon: '👨‍🏫', title: 'Teacher Portal', desc: 'Lesson planning and grade management' },
-    { icon: '💰', title: 'Fee Management', desc: 'Automated billing and payment tracking' },
-    { icon: '📱', title: 'Mobile Apps', desc: 'Dedicated apps for students, parents, teachers' },
-    { icon: '🌍', title: 'Global Ready', desc: 'Multi-currency and multi-language support' },
-    { icon: '🔒', title: 'Bank-Grade Security', desc: 'KCB-level security and data protection' }
+    { 
+      icon: '👥', 
+      title: 'Member Management', 
+      desc: 'Complete member records, profiles, and relationship tracking across all organization types' 
+    },
+    { 
+      icon: '💰', 
+      title: 'Financial Management', 
+      desc: 'Multi-currency billing, payment tracking, and financial reporting for global operations' 
+    },
+    { 
+      icon: '📊', 
+      title: 'Advanced Analytics', 
+      desc: 'Real-time insights and performance metrics tailored to your organization type' 
+    },
+    { 
+      icon: '🌍', 
+      title: 'Global Infrastructure', 
+      desc: 'Multi-language, multi-timezone support with local compliance for 190+ countries' 
+    },
+    { 
+      icon: '🔒', 
+      title: 'Enterprise Security', 
+      desc: 'Bank-grade security, GDPR compliance, and military-level data protection' 
+    },
+    { 
+      icon: '🔄', 
+      title: 'Workflow Automation', 
+      desc: 'Customizable workflows for admissions, HR, operations, and member services' 
+    }
+  ];
+
+  // Organization types we serve
+  const organizationTypes = [
+    { icon: '🎓', name: 'Educational Institutions', count: '500+' },
+    { icon: '🏢', name: 'Business Corporations', count: '200+' },
+    { icon: '🏛️', name: 'Government Agencies', count: '75+' },
+    { icon: '🏥', name: 'Healthcare Organizations', count: '150+' },
+    { icon: '🤝', name: 'Non-Profit Organizations', count: '300+' },
+    { icon: '🏭', name: 'Industrial Companies', count: '120+' }
   ];
 
   return (
@@ -41,15 +80,15 @@ export default function ModernHome() {
         {/* Header */}
         <header style={styles.header}>
           <div style={styles.logo}>
-            <span style={styles.logoIcon}>🎓</span>
+            <span style={styles.logoIcon}>🌐</span>
             <span style={styles.logoText}>TrendWave Connect</span>
           </div>
           <div style={styles.headerButtons}>
             <button onClick={navigateToWebsite} style={styles.secondaryButton}>
-              🌐 Visit Our Website
+              Website
             </button>
             <button onClick={navigateToLogin} style={styles.primaryButton}>
-              🔐 Admin Login
+              Admin Login
             </button>
           </div>
         </header>
@@ -58,64 +97,88 @@ export default function ModernHome() {
         <section style={styles.hero}>
           <div style={styles.heroContent}>
             <h1 style={styles.heroTitle}>
-              Transform Your School with
-              <span style={styles.highlight}> Digital Excellence</span>
+              One Platform for
+              <span style={styles.highlight}> Every Organization</span>
             </h1>
             <p style={styles.heroSubtitle}>
-              Africa's most comprehensive school management platform. 
-              Streamline administration, enhance learning, and engage your community.
+              The world's most comprehensive management platform for schools, businesses, 
+              governments, and organizations of all types. Streamline operations, enhance 
+              engagement, and drive growth globally.
             </p>
             
             {/* Action Buttons */}
             <div style={styles.heroButtons}>
-              <button onClick={navigateToLogin} style={styles.ctaButton}>
-                🚀 Launch Admin Portal
+              <button onClick={navigateToRegister} style={styles.ctaButton}>
+                Start Free Trial
               </button>
-              <button onClick={navigateToWebsite} style={styles.outlineButton}>
-                💼 View Pricing & Plans
+              <button onClick={navigateToLogin} style={styles.outlineButton}>
+                Admin Portal
               </button>
             </div>
 
             {/* Stats */}
             <div style={styles.stats}>
               <div style={styles.stat}>
-                <span style={styles.statNumber}>100+</span>
-                <span style={styles.statLabel}>Schools</span>
+                <span style={styles.statNumber}>1,200+</span>
+                <span style={styles.statLabel}>Organizations</span>
               </div>
               <div style={styles.stat}>
-                <span style={styles.statNumber}>50,000+</span>
-                <span style={styles.statLabel}>Students</span>
-              </div>
-              <div style={styles.stat}>
-                <span style={styles.statNumber}>15+</span>
+                <span style={styles.statNumber}>85+</span>
                 <span style={styles.statLabel}>Countries</span>
+              </div>
+              <div style={styles.stat}>
+                <span style={styles.statNumber}>99.9%</span>
+                <span style={styles.statLabel}>Uptime</span>
               </div>
             </div>
           </div>
           
           {/* Animated Illustration */}
           <div style={styles.illustration}>
-            <div style={styles.floatingElement}>📚</div>
-            <div style={{...styles.floatingElement, animationDelay: '1s'}}>👥</div>
-            <div style={{...styles.floatingElement, animationDelay: '2s'}}>💰</div>
+            <div style={styles.floatingElement}>🏢</div>
+            <div style={{...styles.floatingElement, animationDelay: '1s'}}>🎓</div>
+            <div style={{...styles.floatingElement, animationDelay: '2s'}}>🏛️</div>
+          </div>
+        </section>
+
+        {/* Organization Types */}
+        <section style={styles.organizations}>
+          <div style={styles.sectionHeader}>
+            <h2 style={styles.sectionTitle}>Trusted Worldwide</h2>
+            <p style={styles.sectionSubtitle}>
+              Serving diverse organizations across every sector and continent
+            </p>
+          </div>
+          
+          <div style={styles.orgGrid}>
+            {organizationTypes.map((org, index) => (
+              <div 
+                key={index}
+                style={styles.orgCard}
+                className="feature-card"
+              >
+                <div style={styles.orgIcon}>{org.icon}</div>
+                <h3 style={styles.orgName}>{org.name}</h3>
+                <span style={styles.orgCount}>{org.count}</span>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Features Grid */}
         <section style={styles.features}>
-          <h2 style={styles.sectionTitle}>Everything Your School Needs</h2>
-          <p style={styles.sectionSubtitle}>
-            Comprehensive tools designed for African educational institutions
-          </p>
+          <div style={styles.sectionHeader}>
+            <h2 style={styles.sectionTitle}>Enterprise-Grade Features</h2>
+            <p style={styles.sectionSubtitle}>
+              Comprehensive tools designed for organizations of all types and sizes
+            </p>
+          </div>
           
           <div style={styles.featuresGrid}>
             {features.map((feature, index) => (
               <div 
                 key={index}
-                style={{
-                  ...styles.featureCard,
-                  animationDelay: `${index * 0.1}s`
-                }}
+                style={styles.featureCard}
                 className="feature-card"
               >
                 <div style={styles.featureIcon}>{feature.icon}</div>
@@ -126,19 +189,54 @@ export default function ModernHome() {
           </div>
         </section>
 
+        {/* Global Presence */}
+        <section style={styles.global}>
+          <div style={styles.globalContent}>
+            <div style={styles.globalText}>
+              <h2 style={styles.globalTitle}>Truly Global Infrastructure</h2>
+              <p style={styles.globalDesc}>
+                With data centers across 6 continents and support for 190+ countries, 
+                we ensure optimal performance and compliance wherever your organization operates.
+              </p>
+              <div style={styles.globalStats}>
+                <div style={styles.globalStat}>
+                  <strong>6</strong>
+                  <span>Continents</span>
+                </div>
+                <div style={styles.globalStat}>
+                  <strong>190+</strong>
+                  <span>Countries</span>
+                </div>
+                <div style={styles.globalStat}>
+                  <strong>50+</strong>
+                  <span>Languages</span>
+                </div>
+                <div style={styles.globalStat}>
+                  <strong>24/7</strong>
+                  <span>Support</span>
+                </div>
+              </div>
+            </div>
+            <div style={styles.globalMap}>
+              {/* World map illustration placeholder */}
+              <div style={styles.mapPlaceholder}>🌍</div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section style={styles.ctaSection}>
           <div style={styles.ctaCard}>
-            <h2 style={styles.ctaTitle}>Ready to Transform Your School?</h2>
+            <h2 style={styles.ctaTitle}>Ready to Transform Your Organization?</h2>
             <p style={styles.ctaText}>
-              Join hundreds of schools already using TrendWave Connect to streamline their operations.
+              Join thousands of organizations worldwide using TrendWave Connect to streamline operations and drive growth.
             </p>
             <div style={styles.ctaButtons}>
-              <button onClick={navigateToLogin} style={styles.ctaButton}>
-                🎯 Start Managing Your School
+              <button onClick={navigateToRegister} style={styles.ctaButton}>
+                Start Your Free Trial
               </button>
               <button onClick={navigateToWebsite} style={styles.contactButton}>
-                📞 Contact Sales
+                Contact Sales
               </button>
             </div>
           </div>
@@ -149,11 +247,11 @@ export default function ModernHome() {
           <div style={styles.footerContent}>
             <div style={styles.footerBrand}>
               <div style={styles.logo}>
-                <span style={styles.logoIcon}>🎓</span>
+                <span style={styles.logoIcon}>🌐</span>
                 <span style={styles.logoText}>TrendWave Connect</span>
               </div>
               <p style={styles.footerText}>
-                Empowering African education through technology
+                Empowering organizations worldwide through innovative technology solutions
               </p>
             </div>
             
@@ -161,17 +259,17 @@ export default function ModernHome() {
               <div style={styles.linkGroup}>
                 <strong style={styles.linkTitle}>Platform</strong>
                 <a href="/auth/login" style={styles.footerLink}>Admin Login</a>
+                <a href="/auth/register" style={styles.footerLink}>Register</a>
                 <a href="https://trendwaveconnect.com/features" style={styles.footerLink}>Features</a>
-                <a href="https://trendwaveconnect.com/pricing" style={styles.footerLink}>Pricing</a>
               </div>
               
               <div style={styles.linkGroup}>
                 <strong style={styles.linkTitle}>Support</strong>
                 <a href="mailto:support@trendwaveconnect.com" style={styles.footerLink}>
-                  📧 support@trendwaveconnect.com
+                  support@trendwaveconnect.com
                 </a>
-                <a href="mailto:contact@trendwaveconnect.com" style={styles.footerLink}>
-                  📞 contact@trendwaveconnect.com
+                <a href="mailto:sales@trendwaveconnect.com" style={styles.footerLink}>
+                  sales@trendwaveconnect.com
                 </a>
                 <a href="https://trendwaveconnect.com/help" style={styles.footerLink}>Help Center</a>
               </div>
@@ -179,7 +277,7 @@ export default function ModernHome() {
               <div style={styles.linkGroup}>
                 <strong style={styles.linkTitle}>Company</strong>
                 <a href="https://trendwaveconnect.com/about" style={styles.footerLink}>About Us</a>
-                <a href="https://trendwaveconnect.com/blog" style={styles.footerLink}>Blog</a>
+                <a href="https://trendwaveconnect.com/careers" style={styles.footerLink}>Careers</a>
                 <a href="https://trendwaveconnect.com/contact" style={styles.footerLink}>Contact</a>
               </div>
             </div>
@@ -187,7 +285,7 @@ export default function ModernHome() {
           
           <div style={styles.footerBottom}>
             <p style={styles.copyright}>
-              © 2026 TrendWave Connect. All rights reserved.
+              © 2024 TrendWave Connect. All rights reserved. Serving organizations worldwide.
             </p>
           </div>
         </footer>
@@ -196,13 +294,13 @@ export default function ModernHome() {
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          50% { transform: translateY(-15px); }
         }
         
         @keyframes fadeInUp {
           from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
           }
           to {
             opacity: 1;
@@ -219,12 +317,14 @@ export default function ModernHome() {
   );
 }
 
+// Refined styles with smaller text and professional look
 const styles = {
   container: {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
   background: {
     position: 'absolute',
@@ -243,20 +343,20 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '2rem 4rem',
+    padding: '1.5rem 4rem',
     maxWidth: '1400px',
     margin: '0 auto'
   },
   logo: {
     display: 'flex',
     alignItems: 'center',
-    gap: '0.75rem',
-    fontSize: '1.5rem',
+    gap: '0.5rem',
+    fontSize: '1.25rem',
     fontWeight: '700',
     color: 'white'
   },
   logoIcon: {
-    fontSize: '2rem'
+    fontSize: '1.5rem'
   },
   logoText: {
     background: 'linear-gradient(45deg, #fff, #e0e7ff)',
@@ -265,55 +365,49 @@ const styles = {
   },
   headerButtons: {
     display: 'flex',
-    gap: '1rem',
+    gap: '0.75rem',
     alignItems: 'center'
   },
   primaryButton: {
     background: 'rgba(255, 255, 255, 0.2)',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     color: 'white',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '50px',
-    fontSize: '0.9rem',
+    padding: '0.5rem 1.25rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
     fontWeight: '600',
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
+    transition: 'all 0.3s ease'
   },
   secondaryButton: {
     background: 'transparent',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     color: 'white',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '50px',
-    fontSize: '0.9rem',
+    padding: '0.5rem 1.25rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
+    transition: 'all 0.3s ease'
   },
   hero: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     alignItems: 'center',
-    padding: '4rem 4rem 8rem',
+    padding: '3rem 4rem 6rem',
     maxWidth: '1400px',
     margin: '0 auto',
-    gap: '4rem'
+    gap: '3rem'
   },
   heroContent: {
     color: 'white'
   },
   heroTitle: {
-    fontSize: '3.5rem',
+    fontSize: '2.5rem',
     fontWeight: '800',
-    lineHeight: '1.1',
-    margin: '0 0 1.5rem 0',
+    lineHeight: '1.2',
+    margin: '0 0 1rem 0',
     background: 'linear-gradient(45deg, #fff, #e0e7ff)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
@@ -325,50 +419,44 @@ const styles = {
     display: 'block'
   },
   heroSubtitle: {
-    fontSize: '1.25rem',
+    fontSize: '1rem',
     lineHeight: '1.6',
-    margin: '0 0 2.5rem 0',
+    margin: '0 0 2rem 0',
     opacity: '0.9',
     maxWidth: '500px'
   },
   heroButtons: {
     display: 'flex',
-    gap: '1rem',
-    marginBottom: '3rem',
+    gap: '0.75rem',
+    marginBottom: '2.5rem',
     flexWrap: 'wrap'
   },
   ctaButton: {
     background: 'linear-gradient(45deg, #f59e0b, #d97706)',
     border: 'none',
     color: 'white',
-    padding: '1rem 2rem',
-    borderRadius: '50px',
-    fontSize: '1rem',
-    fontWeight: '700',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    boxShadow: '0 10px 30px rgba(245, 158, 11, 0.4)'
-  },
-  outlineButton: {
-    background: 'transparent',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
-    color: 'white',
-    padding: '1rem 2rem',
-    borderRadius: '50px',
-    fontSize: '1rem',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
+    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.4)'
+  },
+  outlineButton: {
+    background: 'transparent',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    color: 'white',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
   },
   stats: {
     display: 'flex',
-    gap: '3rem'
+    gap: '2rem'
   },
   stat: {
     display: 'flex',
@@ -376,14 +464,14 @@ const styles = {
     alignItems: 'flex-start'
   },
   statNumber: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     fontWeight: '800',
     background: 'linear-gradient(45deg, #fbbf24, #f59e0b)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
   },
   statLabel: {
-    fontSize: '0.9rem',
+    fontSize: '0.8rem',
     opacity: '0.8'
   },
   illustration: {
@@ -391,160 +479,252 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '400px'
+    height: '300px'
   },
   floatingElement: {
     position: 'absolute',
-    fontSize: '4rem',
+    fontSize: '3rem',
     animation: 'float 3s ease-in-out infinite',
     background: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: '20px',
-    padding: '1rem',
+    borderRadius: '15px',
+    padding: '0.75rem',
     backdropFilter: 'blur(10px)'
   },
-  features: {
-    background: 'white',
-    padding: '6rem 4rem',
-    borderRadius: '40px 40px 0 0'
+  sectionHeader: {
+    textAlign: 'center',
+    marginBottom: '3rem'
   },
   sectionTitle: {
-    fontSize: '2.5rem',
+    fontSize: '2rem',
     fontWeight: '800',
-    textAlign: 'center',
-    margin: '0 0 1rem 0',
+    margin: '0 0 0.75rem 0',
     color: '#1f2937'
   },
   sectionSubtitle: {
-    fontSize: '1.2rem',
-    textAlign: 'center',
+    fontSize: '1rem',
     color: '#6b7280',
-    margin: '0 0 4rem 0',
+    margin: 0,
     maxWidth: '600px',
     marginLeft: 'auto',
     marginRight: 'auto'
   },
+  organizations: {
+    background: 'white',
+    padding: '4rem 4rem'
+  },
+  orgGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1.5rem',
+    maxWidth: '1000px',
+    margin: '0 auto'
+  },
+  orgCard: {
+    background: 'white',
+    padding: '1.5rem',
+    borderRadius: '12px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    border: '1px solid #f3f4f6',
+    textAlign: 'center',
+    transition: 'all 0.3s ease',
+    opacity: 0
+  },
+  orgIcon: {
+    fontSize: '2rem',
+    marginBottom: '0.75rem'
+  },
+  orgName: {
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    margin: '0 0 0.5rem 0',
+    color: '#1f2937'
+  },
+  orgCount: {
+    fontSize: '0.8rem',
+    color: '#f59e0b',
+    fontWeight: '700'
+  },
+  features: {
+    background: '#f8fafc',
+    padding: '4rem 4rem'
+  },
   featuresGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   featureCard: {
     background: 'white',
-    padding: '2rem',
-    borderRadius: '20px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+    padding: '1.5rem',
+    borderRadius: '12px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
     border: '1px solid #f3f4f6',
     transition: 'all 0.3s ease',
     opacity: 0
   },
   featureIcon: {
-    fontSize: '3rem',
+    fontSize: '2rem',
     marginBottom: '1rem'
   },
   featureTitle: {
-    fontSize: '1.25rem',
+    fontSize: '1rem',
     fontWeight: '700',
     margin: '0 0 0.5rem 0',
     color: '#1f2937'
   },
   featureDesc: {
+    fontSize: '0.875rem',
+    color: '#6b7280',
+    lineHeight: '1.5',
+    margin: 0
+  },
+  global: {
+    background: 'white',
+    padding: '4rem 4rem'
+  },
+  globalContent: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '3rem',
+    alignItems: 'center',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  },
+  globalTitle: {
+    fontSize: '1.75rem',
+    fontWeight: '800',
+    margin: '0 0 1rem 0',
+    color: '#1f2937'
+  },
+  globalDesc: {
+    fontSize: '0.9rem',
     color: '#6b7280',
     lineHeight: '1.6',
-    margin: 0
+    margin: '0 0 2rem 0'
+  },
+  globalStats: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '1.5rem'
+  },
+  globalStat: {
+    textAlign: 'center',
+    padding: '1rem',
+    background: '#f8fafc',
+    borderRadius: '8px'
+  },
+  globalStat strong: {
+    display: 'block',
+    fontSize: '1.25rem',
+    fontWeight: '800',
+    color: '#1e3a8a',
+    marginBottom: '0.25rem'
+  },
+  globalStat span: {
+    fontSize: '0.8rem',
+    color: '#6b7280'
+  },
+  mapPlaceholder: {
+    fontSize: '8rem',
+    textAlign: 'center',
+    opacity: '0.7'
   },
   ctaSection: {
     background: 'linear-gradient(135deg, #1e3a8a, #3730a3)',
-    padding: '6rem 4rem'
+    padding: '4rem 4rem'
   },
   ctaCard: {
     background: 'white',
-    padding: '4rem',
-    borderRadius: '30px',
+    padding: '3rem',
+    borderRadius: '16px',
     textAlign: 'center',
-    maxWidth: '800px',
+    maxWidth: '600px',
     margin: '0 auto',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.1)'
+    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
   },
   ctaTitle: {
-    fontSize: '2.5rem',
+    fontSize: '1.75rem',
     fontWeight: '800',
     margin: '0 0 1rem 0',
     color: '#1f2937'
   },
   ctaText: {
-    fontSize: '1.2rem',
+    fontSize: '0.9rem',
     color: '#6b7280',
-    margin: '0 0 2.5rem 0',
-    maxWidth: '500px',
+    margin: '0 0 2rem 0',
+    maxWidth: '400px',
     marginLeft: 'auto',
     marginRight: 'auto'
   },
   ctaButtons: {
     display: 'flex',
-    gap: '1rem',
+    gap: '0.75rem',
     justifyContent: 'center',
     flexWrap: 'wrap'
   },
   contactButton: {
     background: 'transparent',
-    border: '2px solid #1e3a8a',
+    border: '1px solid #1e3a8a',
     color: '#1e3a8a',
-    padding: '1rem 2rem',
-    borderRadius: '50px',
-    fontSize: '1rem',
-    fontWeight: '700',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
+    fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.3s ease'
   },
   footer: {
     background: '#1f2937',
     color: 'white',
-    padding: '4rem 4rem 2rem'
+    padding: '3rem 4rem 1.5rem'
   },
   footerContent: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
-    gap: '4rem',
+    gap: '3rem',
     maxWidth: '1400px',
     margin: '0 auto',
-    marginBottom: '3rem'
+    marginBottom: '2rem'
   },
   footerBrand: {
-    maxWidth: '300px'
+    maxWidth: '250px'
   },
   footerText: {
+    fontSize: '0.875rem',
     color: '#9ca3af',
-    lineHeight: '1.6',
-    margin: '1rem 0 0 0'
+    lineHeight: '1.5',
+    margin: '0.75rem 0 0 0'
   },
   footerLinks: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '3rem'
+    gap: '2rem'
   },
   linkGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.75rem'
+    gap: '0.5rem'
   },
   linkTitle: {
-    fontSize: '1.1rem',
-    marginBottom: '1rem',
+    fontSize: '0.9rem',
+    marginBottom: '0.75rem',
     color: 'white'
   },
   footerLink: {
+    fontSize: '0.8rem',
     color: '#9ca3af',
     textDecoration: 'none',
     transition: 'color 0.3s ease'
   },
   footerBottom: {
     borderTop: '1px solid #374151',
-    paddingTop: '2rem',
+    paddingTop: '1.5rem',
     textAlign: 'center'
   },
   copyright: {
+    fontSize: '0.8rem',
     color: '#9ca3af',
     margin: 0
   }
@@ -554,28 +734,28 @@ const styles = {
 Object.assign(styles.primaryButton, {
   ':hover': {
     background: 'rgba(255, 255, 255, 0.3)',
-    transform: 'translateY(-2px)'
+    transform: 'translateY(-1px)'
   }
 });
 
 Object.assign(styles.secondaryButton, {
   ':hover': {
     background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-2px)'
+    transform: 'translateY(-1px)'
   }
 });
 
 Object.assign(styles.ctaButton, {
   ':hover': {
-    transform: 'translateY(-3px)',
-    boxShadow: '0 15px 40px rgba(245, 158, 11, 0.6)'
+    transform: 'translateY(-2px)',
+    boxShadow: '0 6px 20px rgba(245, 158, 11, 0.6)'
   }
 });
 
 Object.assign(styles.outlineButton, {
   ':hover': {
     background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-2px)'
+    transform: 'translateY(-1px)'
   }
 });
 
@@ -583,14 +763,21 @@ Object.assign(styles.contactButton, {
   ':hover': {
     background: '#1e3a8a',
     color: 'white',
-    transform: 'translateY(-2px)'
+    transform: 'translateY(-1px)'
+  }
+});
+
+Object.assign(styles.orgCard, {
+  ':hover': {
+    transform: 'translateY(-5px)',
+    boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
   }
 });
 
 Object.assign(styles.featureCard, {
   ':hover': {
-    transform: 'translateY(-10px)',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.15)'
+    transform: 'translateY(-5px)',
+    boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
   }
 });
 
