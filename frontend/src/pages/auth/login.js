@@ -1,57 +1,116 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function Register() {
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
-  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle login logic here
+    console.log('Login attempt:', { email, password });
+  };
+
+  const navigateToRegister = () => {
+    router.push('/auth/register');
+  };
+
+  const navigateToHome = () => {
+    router.push('/');
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
-          <div style={styles.logo}>🎓</div>
-          <h1 style={styles.title}>School Registration</h1>
-          <p style={styles.subtitle}>Create your school account in minutes</p>
+          <div style={styles.logo}>🌐</div>
+          <h1 style={styles.title}>Admin Login</h1>
+          <p style={styles.subtitle}>Access your organization's management portal</p>
         </div>
-        
-        <div style={styles.content}>
-          <div style={styles.featureList}>
-            <div style={styles.featureItem}>
-              <span style={styles.featureIcon}>🚀</span>
-              <div>
-                <h3>1 Month Free Trial</h3>
-                <p>Full access to all features with no commitment</p>
-              </div>
-            </div>
-            
-            <div style={styles.featureItem}>
-              <span style={styles.featureIcon}>👥</span>
-              <div>
-                <h3>Student Management</h3>
-                <p>Complete student records and parent communication</p>
-              </div>
-            </div>
-            
-            <div style={styles.featureItem}>
-              <span style={styles.featureIcon}>💰</span>
-              <div>
-                <h3>Fee Collection</h3>
-                <p>Mobile money integration and payment tracking</p>
-              </div>
-            </div>
+
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.formGroup}>
+            <label htmlFor="email" style={styles.label}>Email Address</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@yourorganization.com"
+              required
+              style={styles.input}
+            />
           </div>
-          
+
+          <div style={styles.formGroup}>
+            <label htmlFor="password" style={styles.label}>Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.formOptions}>
+            <label style={styles.checkboxLabel}>
+              <input type="checkbox" style={styles.checkbox} />
+              <span style={styles.checkboxText}>Remember me</span>
+            </label>
+            <a href="/auth/forgot-password" style={styles.forgotLink}>
+              Forgot password?
+            </a>
+          </div>
+
           <button 
+            type="submit" 
             style={styles.primaryButton}
-            onClick={() => router.push('/auth/register-new')}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 8px 25px rgba(245, 158, 11, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 4px 15px rgba(245, 158, 11, 0.3)';
+            }}
           >
-            🎯 Start School Registration
+            Sign In
           </button>
-          
+        </form>
+
+        <div style={styles.footer}>
+          <p style={styles.footerText}>
+            Don't have an account?{' '}
+            <button 
+              onClick={navigateToRegister} 
+              style={styles.linkButton}
+              onMouseEnter={(e) => {
+                e.target.style.color = '#1E3A8A';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = '#667eea';
+              }}
+            >
+              Register your organization
+            </button>
+          </p>
           <button 
+            onClick={navigateToHome} 
             style={styles.secondaryButton}
-            onClick={() => router.push('/auth/login')}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = '#1E3A8A';
+              e.target.style.color = '#1E3A8A';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = '#E5E7EB';
+              e.target.style.color = '#6B7280';
+            }}
           >
-            Already have an account? Sign In
+            Back to Home
           </button>
         </div>
       </div>
@@ -75,7 +134,7 @@ const styles = {
     borderRadius: '20px',
     boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
     width: '100%',
-    maxWidth: '500px',
+    maxWidth: '450px',
     textAlign: 'center'
   },
   header: {
@@ -96,71 +155,98 @@ const styles = {
     color: '#6B7280',
     margin: 0
   },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '25px'
+  form: {
+    marginBottom: '30px'
   },
-  featureList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px'
+  formGroup: {
+    marginBottom: '20px',
+    textAlign: 'left'
   },
-  featureItem: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '15px',
-    textAlign: 'left',
-    padding: '20px',
-    background: '#F8FAFC',
-    borderRadius: '12px',
-    border: '1px solid #E5E7EB'
-  },
-  featureIcon: {
-    fontSize: '24px',
-    marginTop: '2px'
-  },
-  featureItem h3: {
-    margin: '0 0 5px 0',
-    fontSize: '16px',
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  featureItem p: {
-    margin: 0,
+  label: {
+    display: 'block',
     fontSize: '14px',
+    fontWeight: '600',
+    marginBottom: '8px',
+    color: '#374151'
+  },
+  input: {
+    width: '100%',
+    padding: '12px 16px',
+    border: '1px solid #D1D5DB',
+    borderRadius: '8px',
+    fontSize: '14px',
+    transition: 'all 0.3s ease',
+    boxSizing: 'border-box'
+  },
+  formOptions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '25px',
+    fontSize: '14px'
+  },
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     color: '#6B7280',
-    lineHeight: '1.5'
+    cursor: 'pointer'
+  },
+  checkbox: {
+    margin: 0
+  },
+  checkboxText: {
+    fontSize: '14px'
+  },
+  forgotLink: {
+    color: '#667eea',
+    textDecoration: 'none',
+    fontWeight: '500',
+    fontSize: '14px'
   },
   primaryButton: {
-    background: 'linear-gradient(135deg, #1E3A8A, #3730A3)',
+    width: '100%',
+    background: 'linear-gradient(135deg, #f59e0b, #d97706)',
     color: 'white',
     border: 'none',
-    padding: '18px 30px',
-    borderRadius: '12px',
+    padding: '15px 30px',
+    borderRadius: '8px',
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    boxShadow: '0 8px 25px rgba(30, 58, 138, 0.3)',
-    ':hover': {
-      transform: 'translateY(-3px)',
-      boxShadow: '0 12px 30px rgba(30, 58, 138, 0.4)'
-    }
+    boxShadow: '0 4px 15px rgba(245, 158, 11, 0.3)'
   },
   secondaryButton: {
+    width: '100%',
     background: 'none',
     color: '#6B7280',
     border: '2px solid #E5E7EB',
-    padding: '15px 30px',
-    borderRadius: '12px',
+    padding: '12px 30px',
+    borderRadius: '8px',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    ':hover': {
-      borderColor: '#1E3A8A',
-      color: '#1E3A8A'
-    }
+    marginTop: '15px'
+  },
+  footer: {
+    textAlign: 'center'
+  },
+  footerText: {
+    fontSize: '14px',
+    color: '#6B7280',
+    margin: '0 0 20px 0'
+  },
+  linkButton: {
+    background: 'none',
+    border: 'none',
+    color: '#667eea',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    textDecoration: 'underline',
+    transition: 'all 0.3s ease',
+    padding: 0
   }
 };
