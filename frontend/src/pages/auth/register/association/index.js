@@ -113,11 +113,29 @@ export default function AssociationRegistration() {
     e.preventDefault();
     setLoading(true);
     
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const associationId = `TWCA${Math.floor(1000 + Math.random() * 9000)}`;
-    
-    setLoading(false);
-    router.push(`/auth/success?id=${associationId}&type=association`);
+    try {
+      const response = await fetch('/api/associations/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        const associationId = result.data.associationId;
+        router.push(`/auth/success?id=${associationId}&type=association`);
+      } else {
+        alert(result.message || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderStep1 = () => (
@@ -216,11 +234,179 @@ export default function AssociationRegistration() {
     </div>
   );
 
-  // Add other steps...
+  const renderStep2 = () => (
+    <div style={styles.stepContainer}>
+      <div style={styles.stepHeader}>
+        <div style={{...styles.stepIcon, background: '#DB2777'}}>📞</div>
+        <div>
+          <h3 style={styles.stepTitle}>Contact Information</h3>
+          <p style={styles.stepSubtitle}>How can we reach your association?</p>
+        </div>
+      </div>
+
+      <div style={styles.formGrid}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Email Address *</label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            placeholder="contact@association.org"
+            style={styles.input}
+            required
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Phone Number</label>
+          <input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+            placeholder="+254 XXX XXX XXX"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Website</label>
+          <input
+            type="url"
+            value={formData.website}
+            onChange={(e) => handleInputChange('website', e.target.value)}
+            placeholder="https://yourassociation.org"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Address</label>
+          <textarea
+            value={formData.address}
+            onChange={(e) => handleInputChange('address', e.target.value)}
+            placeholder="Enter association address"
+            style={styles.textarea}
+            rows="3"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep3 = () => (
+    <div style={styles.stepContainer}>
+      <div style={styles.stepHeader}>
+        <div style={{...styles.stepIcon, background: '#DB2777'}}>👨‍💼</div>
+        <div>
+          <h3 style={styles.stepTitle}>Leadership Information</h3>
+          <p style={styles.stepSubtitle}>Primary contact person for the association</p>
+        </div>
+      </div>
+
+      <div style={styles.formGrid}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>President/Chairperson Name</label>
+          <input
+            type="text"
+            value={formData.presidentName}
+            onChange={(e) => handleInputChange('presidentName', e.target.value)}
+            placeholder="Full name of president"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>President Email</label>
+          <input
+            type="email"
+            value={formData.presidentEmail}
+            onChange={(e) => handleInputChange('presidentEmail', e.target.value)}
+            placeholder="president@association.org"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>President Phone</label>
+          <input
+            type="tel"
+            value={formData.presidentPhone}
+            onChange={(e) => handleInputChange('presidentPhone', e.target.value)}
+            placeholder="+254 XXX XXX XXX"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Position</label>
+          <select
+            value={formData.presidentPosition}
+            onChange={(e) => handleInputChange('presidentPosition', e.target.value)}
+            style={styles.select}
+          >
+            <option value="President">President</option>
+            <option value="Chairperson">Chairperson</option>
+            <option value="Director">Director</option>
+            <option value="Coordinator">Coordinator</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep4 = () => (
+    <div style={styles.stepContainer}>
+      <div style={styles.stepHeader}>
+        <div style={{...styles.stepIcon, background: '#DB2777'}}>🎯</div>
+        <div>
+          <h3 style={styles.stepTitle}>Association Details</h3>
+          <p style={styles.stepSubtitle}>Membership types and activities</p>
+        </div>
+      </div>
+
+      <div style={styles.formGrid}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Membership Types Offered</label>
+          <div style={styles.checkboxGrid}>
+            {membershipTypes.map(type => (
+              <label key={type} style={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={formData.membershipTypes.includes(type)}
+                  onChange={() => handleArrayToggle('membershipTypes', type)}
+                  style={styles.checkbox}
+                />
+                <span style={styles.checkboxText}>{type}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Association Activities</label>
+          <div style={styles.checkboxGrid}>
+            {associationActivities.map(activity => (
+              <label key={activity} style={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={formData.activities.includes(activity)}
+                  onChange={() => handleArrayToggle('activities', activity)}
+                  style={styles.checkbox}
+                />
+                <span style={styles.checkboxText}>{activity}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   const steps = [
     { number: 1, title: 'Association Info', component: renderStep1 },
-    // Add other steps here
+    { number: 2, title: 'Contact', component: renderStep2 },
+    { number: 3, title: 'Leadership', component: renderStep3 },
+    { number: 4, title: 'Details', component: renderStep4 }
   ];
 
   return (
@@ -330,7 +516,254 @@ export default function AssociationRegistration() {
   );
 }
 
-// Use the same styles object structure
+// COMPLETE STYLES OBJECT
 const styles = {
-  // ... Same structure as previous forms with pink theme (#DB2777)
+  container: {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    position: 'relative'
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)',
+  },
+  card: {
+    background: 'white',
+    borderRadius: '20px',
+    boxShadow: '0 25px 80px rgba(0,0,0,0.15)',
+    width: '100%',
+    maxWidth: '800px',
+    overflow: 'hidden'
+  },
+  header: {
+    padding: '30px 40px 20px',
+    borderBottom: '1px solid #E5E7EB'
+  },
+  backButton: {
+    background: 'none',
+    border: 'none',
+    color: '#6B7280',
+    fontSize: '14px',
+    cursor: 'pointer',
+    padding: '5px 0',
+    marginBottom: '15px'
+  },
+  titleSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px'
+  },
+  orgIcon: {
+    width: '60px',
+    height: '60px',
+    borderRadius: '15px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '28px',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+  },
+  title: {
+    fontSize: '24px',
+    fontWeight: '800',
+    color: '#1E3A8A',
+    margin: '0 0 5px 0'
+  },
+  subtitle: {
+    fontSize: '14px',
+    color: '#6B7280',
+    margin: 0
+  },
+  progressContainer: {
+    padding: '20px 40px',
+    background: '#F8FAFC'
+  },
+  progressBar: {
+    height: '6px',
+    background: '#E5E7EB',
+    borderRadius: '3px',
+    marginBottom: '20px',
+    overflow: 'hidden'
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: '3px',
+    transition: 'width 0.3s ease'
+  },
+  steps: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  step: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
+    color: '#9CA3AF',
+    fontSize: '12px'
+  },
+  activeStep: {
+    color: '#DB2777'
+  },
+  completedStep: {
+    color: '#10B981'
+  },
+  stepNumber: {
+    width: '30px',
+    height: '30px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '12px',
+    fontWeight: '600',
+    transition: 'all 0.3s ease'
+  },
+  form: {
+    padding: '40px'
+  },
+  stepContainer: {
+    animation: 'fadeIn 0.5s ease-out'
+  },
+  stepHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
+    marginBottom: '30px'
+  },
+  stepIcon: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '20px',
+    color: 'white'
+  },
+  stepTitle: {
+    fontSize: '18px',
+    fontWeight: '700',
+    color: '#1F2937',
+    margin: '0 0 5px 0'
+  },
+  stepSubtitle: {
+    fontSize: '14px',
+    color: '#6B7280',
+    margin: 0
+  },
+  formGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '20px'
+  },
+  formGroup: {
+    marginBottom: '20px'
+  },
+  label: {
+    display: 'block',
+    fontSize: '14px',
+    fontWeight: '600',
+    marginBottom: '8px',
+    color: '#374151'
+  },
+  input: {
+    width: '100%',
+    padding: '12px 16px',
+    border: '1px solid #D1D5DB',
+    borderRadius: '8px',
+    fontSize: '14px',
+    transition: 'all 0.3s ease',
+    boxSizing: 'border-box'
+  },
+  select: {
+    width: '100%',
+    padding: '12px 16px',
+    border: '1px solid #D1D5DB',
+    borderRadius: '8px',
+    fontSize: '14px',
+    background: 'white',
+    cursor: 'pointer'
+  },
+  textarea: {
+    width: '100%',
+    padding: '12px 16px',
+    border: '1px solid #D1D5DB',
+    borderRadius: '8px',
+    fontSize: '14px',
+    resize: 'vertical',
+    fontFamily: 'inherit',
+    gridColumn: '1 / -1'
+  },
+  checkboxGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '10px',
+    marginTop: '10px'
+  },
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px',
+    background: '#F8FAFC',
+    borderRadius: '6px',
+    border: '1px solid #E5E7EB',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
+  },
+  checkbox: {
+    margin: 0
+  },
+  checkboxText: {
+    fontSize: '13px',
+    color: '#374151'
+  },
+  navigation: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '40px',
+    paddingTop: '20px',
+    borderTop: '1px solid #E5E7EB'
+  },
+  primaryButton: {
+    color: 'white',
+    border: 'none',
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
+  },
+  secondaryButton: {
+    background: 'white',
+    color: '#6B7280',
+    border: '1px solid #D1D5DB',
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
+  },
+  submitButton: {
+    color: 'white',
+    border: 'none',
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
+  }
 };
